@@ -1083,6 +1083,22 @@ function final() {
   app.querySelector('#listo').focus();
 }
 
+/* Gramática de cada unidad, en el mismo orden de la ruta del curso. Osito conversa solo con lo que la persona ya estudió. */
+const GRAMATICA = [
+  'greetings; I am, you are, he is, she is; I want, I have',
+  'the alphabet and spelling; numbers 1 to 10; colors before nouns',
+  'word order subject + verb + object; negatives with do not and am not; and, or, too, but',
+  'a, an, the; plurals (also men, women, children); this, that, these, those',
+  'adjectives before nouns; feelings with to be; always, never, sometimes; many, much, some, more',
+  'it, we, they; my, your, his, her, our, their; me, him, us, them; someone, nothing, everyone',
+  'present simple with he/she/it + s; daily routine; does not; present continuous (am/is/are + ing)',
+  'questions with to be; questions with do/does and what, where, when, why, how; short answers; can and cannot',
+  'past simple: was/were, regular verbs with ed, common irregular verbs, did and did not',
+  'can/could; must and have to; should; may, might and would for polite requests',
+  'prepositions of place (on, under, next to, behind), time (in, on, at) and movement; before, after, until',
+  'comparatives (er than, more than); superlatives (the best, the most); as ... as',
+  'connectors: first, then, so, also, if, although, while; opinions with I think and I agree' ];
+
 /* ---------- Conversación con Osito (el servidor habla con Gemini; la clave nunca llega aquí) ---------- */
 const TEMAS = [
   { id: 'presentate', nombre: 'Introduce yourself', guia: 'saludos, decir tu nombre y cómo estás', en: 'Hello! I am Osito. What is your name?', es: '¡Hola! Soy Osito. ¿Cómo te llamas?' },
@@ -1105,7 +1121,7 @@ function hablar() {
       <div class="temas">${TEMAS.map((t, k) => `<button class="tema ${k === c.k ? 'activo' : ''}" data-k="${k}">${t.nombre}</button>`).join('')}</div>
       <div class="chat">
         ${c.msgs.map((m) => m.de === 'yo'
-          ? `<div class="msj yo">${esc(m.t)}</div>${m.tip ? `<div class="consejo"><b>Better:</b> ${esc(m.tip)}</div>` : ''}`
+          ? `<div class="msj yo">${esc(m.t)}</div>${m.tip || m.pron ? `<div class="consejo">${m.tip ? `<b>Better:</b> ${esc(m.tip)}` : ''}${m.tip && m.pron ? '<br>' : ''}${m.pron ? `<b>Pronunciation:</b> ${esc(m.pron)}` : ''}</div>` : ''}`
           : `<div class="msj oso">${hayVoz() ? `<button class="altavoz" data-say="${esc(m.en)}" aria-label="Escuchar a Osito">${I.voz}</button>` : ''}<div>${esc(m.en)}${m.es ? `<small hidden>${esc(m.es)}</small><button class="enlace ver-trad">Translate</button>` : ''}</div></div>`).join('')}
         ${c.ocupado ? '<div class="msj oso"><div>Osito is thinking…</div></div>' : ''}
         ${c.error ? `<div class="aviso">${esc(c.error)}</div>` : ''}
@@ -1113,7 +1129,7 @@ function hablar() {
     </main>
     <footer class="pie"><div class="entrada">
       ${DICT ? `<button class="redondo mic ${oyendo ? 'oyendo' : ''}" id="mic" aria-label="${oyendo ? 'Dejar de escuchar' : 'Hablar por el micrófono'}">${I.mic}</button>` : ''}
-      <input class="campo" id="texto" autocomplete="off" placeholder="${DICT ? 'Speak or type in English' : 'Type in English'}" aria-label="Tu mensaje" ${IA ? '' : 'disabled'}>
+      <input class="campo" id="texto" autocomplete="off" placeholder="${oyendo ? 'Listening…' : DICT ? 'Speak or type in English' : 'Type in English'}" aria-label="Tu mensaje" ${IA ? '' : 'disabled'}>
       <button class="redondo" id="mandar" aria-label="Enviar" ${IA && !c.ocupado ? '' : 'disabled'}>${I.enviar}</button>
     </div></footer>`;
   const texto = app.querySelector('#texto'), hilo = app.querySelector('#hilo');
@@ -1124,7 +1140,9 @@ function hablar() {
   app.querySelectorAll('.tema').forEach((b) => b.onclick = () => { if (!c.ocupado) { nuevoChat(+b.dataset.k); hablar(); } });
   app.querySelectorAll('[data-say]').forEach((b) => b.onclick = () => decir(b.dataset.say));
   app.querySelectorAll('.ver-trad').forEach((b) => b.onclick = () => { b.previousElementSibling.hidden = false; b.hidden = true; });
-  app.querySelector('#mandar').onclick = mandar;
+  app.querySelector('#mandar').onclick = () => mandar();
+  const osos = c.msgs.filter((m) => m.de === 'oso');
+  app.querySelectorAll('.msj.oso [data-say]').forEach((b, i) => b.onclick = () => sonar(osos[i] && osos[i].audio, b.dataset.say));
   const mic = app.querySelector('#mic');
   if (mic) mic.onclick = () => {
     if (oyendo) { DICT.stop().catch(() => {}); return; }
@@ -1133,57 +1151,124 @@ function hablar() {
   };
 }
 
-async function mandar() {
-  const c = chat, t = (c.borrador || '').trim();
-  if (!t || !IA || c.ocupado) return;
-  const porVoz = !!c.porVoz; c.porVoz = false;
-  if (DICT && oyendo) DICT.stop().catch(() => {});
-  const mio = { de: 'yo', t };
-  c.msgs.push(mio); c.borrador = ''; c.ocupado = true; c.error = '';
+async function mandar(audio) {
+  const c = chat, t = audio ? '' : (c.borrador || '').trim();
+  if ((!t && !audio) || !IA || c.ocupado) return;
+  const porVoz = !!audio; c.porVoz = false;
+  const mio = { de: 'yo', t: audio ? '…' : t };
+  const previos = c.msgs.slice();
+  c.msgs.push(mio); if (!audio) c.borrador = ''; c.ocupado = true; c.error = '';
   hablar();
   try {
-    const u = UNIDADES.find((x) => x.lecciones && x.lecciones.includes(LECCIONES[Math.min(pendiente(), LECCIONES.length - 1)]));
-    const { data, error } = await sb.functions.invoke('osito', { body: { tema: TEMAS[c.k].id, nivel: u ? u.nivel : 'A1', mensajes: c.msgs.map((m) => ({ de: m.de, t: m.de === 'yo' ? m.t : m.en })) } });
+    const unidad = Math.max(1, UNIDADES.filter((u) => abierta(u)).length);
+    const mensajes = (audio ? previos : c.msgs).map((m) => ({ de: m.de, t: m.de === 'yo' ? m.t : m.en }));
+    const { data, error } = await sb.functions.invoke('osito', { body: { tema: TEMAS[c.k].id, unidad, voz: true, audio: audio || undefined, mensajes } });
     if (error) { let motivo = ''; try { motivo = (await error.context.json()).error; } catch (e2) {} throw { code: motivo || 'red' }; }
     const r = data;
     if (!r || typeof r.en !== 'string') throw new Error('formato');
+    if (audio) mio.t = r.dijo ? String(r.dijo) : '(audio)';
     if (r.tip) mio.tip = String(r.tip);
-    c.msgs.push({ de: 'oso', en: r.en, es: typeof r.es === 'string' ? r.es : '' });
+    if (r.pron) mio.pron = String(r.pron);
+    c.msgs.push({ de: 'oso', en: r.en, es: typeof r.es === 'string' ? r.es : '', audio: r.audio || null });
     if (est.ultimo !== dia(0)) { est.racha = est.ultimo === dia(1) ? est.racha + 1 : 1; est.ultimo = dia(0); }
     est.xp += 2; guardar();
-    decir(r.en).then(() => { if (porVoz && DICT && chat === c && vista === 'hablar' && !oyendo) { c.porVoz = true; DICT.start().catch(() => { c.porVoz = false; }); } });
+    c.ocupado = false;
+    if (vista === 'hablar') hablar();
+    // Conversación de voz: cuando Osito termina de hablar, el micrófono se abre otra vez.
+    sonar(r.audio, r.en).then(() => { if (porVoz && DICT && chat === c && vista === 'hablar' && !oyendo && !c.ocupado) { c.porVoz = true; DICT.start().catch(() => { c.porVoz = false; }); } });
+    return;
   } catch (e) {
-    c.msgs.pop(); c.borrador = t;
+    c.msgs.pop(); if (!audio) c.borrador = t;
     const MOTIVOS = {
       limite_diario: 'You used your 60 messages today. See you tomorrow!',
       descanso: 'Osito needs a break. Try again in a minute.',
       no_permitido: 'Your email is not on the Osito English list.',
       falta_clave: 'The conversation is not set up on the server yet.',
+      audio: 'Osito could not hear you. Try again, a little louder.',
       red: 'No connection. Check your internet and try again.' };
-    c.error = MOTIVOS[e && e.code] || 'Osito could not answer. Tap send to try again.';
+    c.error = MOTIVOS[e && e.code] || 'Osito could not answer. Try again.';
   }
   c.ocupado = false;
   if (vista === 'hablar') hablar();
 }
 
-/* Micrófono: reconocimiento de voz del navegador (Chrome y Android). Donde no existe, se escribe. */
-const Reconocedor = window.SpeechRecognition || window.webkitSpeechRecognition;
-if (Reconocedor) {
-  const rec = new Reconocedor(); rec.lang = 'en-US'; rec.interimResults = true; rec.continuous = false;
-  let base = '';
-  const pintarMic = () => { const m = app.querySelector('#mic'); if (m) m.classList.toggle('oyendo', oyendo); };
-  rec.onstart = () => { oyendo = true; base = chat ? chat.borrador : ''; pintarMic(); };
-  rec.onend = () => { oyendo = false; pintarMic(); setTimeout(finDeDictado, 250); };
-  rec.onerror = (e) => { if (e.error === 'not-allowed' || e.error === 'service-not-allowed') { DICT = null; if (vista === 'hablar') hablar(); } };
-  rec.onresult = (e) => {
-    let dicho = ''; for (const r of e.results) dicho += r[0].transcript;
-    if (!chat) return;
-    chat.borrador = (base + ' ' + dicho).trim();
-    const c = vista === 'hablar' ? app.querySelector('#texto') : null; if (c) c.value = chat.borrador;
+/* Micrófono: graba tu voz y se la envía a Gemini, que te escucha de verdad (palabras y pronunciación). */
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder) {
+  let grab = null, flujo = null, ctxAudio = null, vigia = null;
+  const pintarMic = () => {
+    const m = app.querySelector('#mic'); if (m) m.classList.toggle('oyendo', oyendo);
+    const c = vista === 'hablar' ? app.querySelector('#texto') : null; if (c) c.placeholder = oyendo ? 'Listening…' : 'Speak or type in English';
   };
+  const soltar = () => {
+    clearInterval(vigia); vigia = null;
+    if (flujo) flujo.getTracks().forEach((p) => p.stop()); flujo = null;
+    if (ctxAudio) { ctxAudio.close().catch(() => {}); ctxAudio = null; }
+  };
+  const parar = () => { if (grab && grab.state !== 'inactive') grab.stop(); };
   DICT = {
-    start: () => { try { rec.start(); } catch (e) {} return Promise.resolve(); },
-    stop: () => { try { rec.stop(); } catch (e) {} return Promise.resolve(); } };
+    start: async () => {
+      if (grab) return;
+      if (sonando) { sonando.pause(); sonando = null; }
+      try { flujo = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }); }
+      catch (e) { throw { code: e && (e.name === 'NotAllowedError' || e.name === 'SecurityError') ? 'not_granted' : 'sin_microfono' }; }
+      const trozos = [], r = new MediaRecorder(flujo); grab = r; r.hablo = false;
+      r.ondataavailable = (e) => { if (e.data && e.data.size) trozos.push(e.data); };
+      r.onstop = async () => {
+        const tipo = r.mimeType || 'audio/webm', hablo = r.hablo;
+        grab = null; oyendo = false; soltar(); pintarMic();
+        if (!hablo || vista !== 'hablar' || !chat) { if (chat) chat.porVoz = false; return; }
+        const blob = new Blob(trozos, { type: tipo });
+        const data = await new Promise((ok) => { const f = new FileReader(); f.onloadend = () => ok(String(f.result).split(',')[1] || ''); f.onerror = () => ok(''); f.readAsDataURL(blob); });
+        const mime = tipo.includes('webm') ? 'audio/webm' : tipo.includes('ogg') ? 'audio/ogg' : tipo.includes('mp4') ? 'audio/m4a' : tipo.split(';')[0];
+        if (data) mandar({ mime, data });
+      };
+      r.start(); oyendo = true; pintarMic();
+      // Corta solo: 1,6 s de silencio después de hablar, 8 s si nadie habla, 30 s como máximo.
+      const t0 = Date.now(); let ultimaVoz = 0;
+      try {
+        ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
+        const an = ctxAudio.createAnalyser(); an.fftSize = 1024;
+        ctxAudio.createMediaStreamSource(flujo).connect(an);
+        const buf = new Uint8Array(an.fftSize);
+        vigia = setInterval(() => {
+          an.getByteTimeDomainData(buf);
+          let s = 0; for (const v of buf) s += (v - 128) * (v - 128);
+          const fuerza = Math.sqrt(s / buf.length) / 128, ahora = Date.now();
+          if (fuerza > 0.04) { ultimaVoz = ahora; r.hablo = true; }
+          if ((r.hablo && ahora - ultimaVoz > 1600) || (!r.hablo && ahora - t0 > 8000) || ahora - t0 > 30000) parar();
+        }, 120);
+      } catch (e) { r.hablo = true; setTimeout(parar, 15000); }
+    },
+    // Tocar el micrófono para parar cuenta como "ya hablé".
+    stop: async () => { if (grab) grab.hablo = true; parar(); } };
+}
+
+/* Reproduce la voz de Gemini. Si no llegó audio o no se puede tocar, lee el texto con la voz del teléfono. */
+let sonando = null;
+function sonar(audio, texto) {
+  if (!audio || !audio.data) return decir(texto);
+  return new Promise((listo) => {
+    const respaldo = () => { decir(texto).then(listo); };
+    try {
+      const bin = atob(audio.data), bytes = new Uint8Array(bin.length);
+      for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      let mime = String(audio.mime || 'audio/wav').toLowerCase(), partes = [bytes];
+      if (/l16|pcm/.test(mime)) { // audio crudo: se le pone cabecera WAV
+        const rate = +((mime.match(/rate=(\d+)/) || [])[1] || 24000), h = new DataView(new ArrayBuffer(44));
+        const txt = (o, s) => { for (let i = 0; i < s.length; i++) h.setUint8(o + i, s.charCodeAt(i)); };
+        txt(0, 'RIFF'); h.setUint32(4, 36 + bytes.length, true); txt(8, 'WAVEfmt '); h.setUint32(16, 16, true);
+        h.setUint16(20, 1, true); h.setUint16(22, 1, true); h.setUint32(24, rate, true); h.setUint32(28, rate * 2, true);
+        h.setUint16(32, 2, true); h.setUint16(34, 16, true); txt(36, 'data'); h.setUint32(40, bytes.length, true);
+        partes = [h.buffer, bytes]; mime = 'audio/wav';
+      }
+      if (sonando) sonando.pause();
+      const url = URL.createObjectURL(new Blob(partes, { type: mime.split(';')[0] })), a = new Audio(url);
+      sonando = a;
+      a.onended = () => { URL.revokeObjectURL(url); if (sonando === a) sonando = null; listo(); };
+      a.onerror = () => { URL.revokeObjectURL(url); respaldo(); };
+      a.play().catch(respaldo);
+    } catch (e) { respaldo(); }
+  });
 }
 
 document.addEventListener('keydown', (e) => {
