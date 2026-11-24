@@ -216,6 +216,11 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--tinta); out
 .inicio .enlace { margin: 0 auto; padding: 2px 8px; font-size: .82rem; }
 @media (max-height: 640px) { .inicio .saludo img { display: none; } .inicio .saludo { padding: 8px 14px; } }
 
+.enlace.ayuda { margin: 0 0 10px; padding: 0; font-size: .9rem; }
+.msj small[hidden] { display: none; }
+.enlace.ver-trad { margin: 4px 0 0; padding: 0; font-size: .8rem; display: block; }
+.enlace[hidden] { display: none; }
+
 .fila-enlaces { display: flex; justify-content: center; gap: 18px; }
 .inicio .fila-enlaces .enlace { margin: 0; }
 
@@ -345,11 +350,11 @@ const SONIDOS = [
       { t: 'elige', q: '¿Qué letra se llama «ei» en inglés?', ops: ['A','E','I'], ok: 'A', say: 'A' },
       { t: 'pares', pares: [['Cat','Gato'],['Dog','Perro'],['Sun','Sol'],['Bed','Cama']] },
       { t: 'escucha', en: 'G', ops: ['G','J','Y'], ok: 'G' },
-      { t: 'ordena', es: 'Deletrea «sol»', en: 'S U N', extra: ['A','O'] },
+      { t: 'ordena', es: 'Spell «sol»', en: 'S U N', extra: ['A','O'] },
       { t: 'elige', q: '¿Cómo se dice «rojo»?', ops: ['Red','Bed','Big'], ok: 'Red', say: 'Red' },
       { t: 'escribe', es: 'perro', resp: ['dog'] },
       { t: 'elige', q: '¿Qué significa «big»?', dice: 'Big', ops: ['Grande','Rojo','Cama'], ok: 'Grande' },
-      { t: 'ordena', es: 'Deletrea «cama»', en: 'B E D', extra: ['A','T'] },
+      { t: 'ordena', es: 'Spell «cama»', en: 'B E D', extra: ['A','T'] },
       { t: 'escribe', es: 'gato', resp: ['cat'] }
     ] },
   { id: 'sonidos-nuevos', nombre: 'Sonidos nuevos', sub: '7 palabras',
@@ -358,7 +363,7 @@ const SONIDOS = [
       { t: 'tip', titulo: 'Sonidos que no existen en español', cuerpo: 'Algunas parejas de letras hacen un sonido propio. Con TH saca un poco la lengua entre los dientes. SH es el sonido de pedir silencio. La H se sopla suave.',
         ej: [['Think','TH · pensar'],['This','TH · esto'],['Shoe','SH · zapato'],['Chair','CH · silla'],['Hat','H · sombrero'],['Phone','PH suena F · teléfono']] },
       { t: 'escucha', en: 'Think', ops: ['Pensar','Esto','Zapato'], ok: 'Pensar' },
-      { t: 'elige', q: '¿Cómo suena PH en «phone»?', ops: ['Como una F','Como una P','No suena'], ok: 'Como una F', say: 'Phone' },
+      { t: 'elige', q: 'How does PH sound in «phone»?', ops: ['Like an F','Like a P','It is silent'], ok: 'Like an F', say: 'Phone' },
       { t: 'pares', pares: [['Shoe','Zapato'],['Chair','Silla'],['Hat','Sombrero'],['Phone','Teléfono']] },
       { t: 'escucha', en: 'Three', ops: ['Tres','Árbol','Libre'], ok: 'Tres' },
       { t: 'elige', q: '¿Qué significa «this»?', dice: 'This', ops: ['Esto','Pensar','Ella'], ok: 'Esto' },
@@ -720,8 +725,8 @@ function armar(l) {
   } else { v = l.voc; f = l.fr; c = l.comp; tip = { t: 'tip', titulo: l.tip[0], cuerpo: l.tip[1], ej: l.tip[2] }; }
   const otros = (x, lista, n) => mezclar(lista.filter((y) => y !== x)).slice(0, n);
   const ens = v.map((x) => x[0]), ess = v.map((x) => x[1]), frEs = f.map((x) => x[0]);
-  const aIngles = (i) => ({ t: 'elige', q: `¿Cómo se dice «${v[i][1].toLowerCase()}»?`, ops: [v[i][0], ...otros(v[i][0], ens, 2)], ok: v[i][0], say: v[i][0] });
-  const aEspanol = (i) => ({ t: 'elige', q: `¿Qué significa «${v[i][0]}»?`, dice: v[i][0], ops: [v[i][1], ...otros(v[i][1], ess, 2)], ok: v[i][1] });
+  const aIngles = (i) => ({ t: 'elige', q: `How do you say «${v[i][1].toLowerCase()}»?`, ops: [v[i][0], ...otros(v[i][0], ens, 2)], ok: v[i][0], say: v[i][0] });
+  const aEspanol = (i) => ({ t: 'elige', q: `What does «${v[i][0]}» mean?`, dice: v[i][0], ops: [v[i][1], ...otros(v[i][1], ess, 2)], ok: v[i][1] });
   const ordenar = (i) => {
     const mias = f[i][1].split(' ').map((w) => w.toLowerCase());
     const resto = [...new Set(f.filter((_, k) => k !== i).flatMap((x) => x[1].split(' ')))].filter((w) => !mias.includes(w.toLowerCase()));
@@ -791,14 +796,46 @@ let IA = null, DICT = null, vista = 'entrar', oyendo = false;
 const sinte = 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
 const hayVoz = () => sinte;
 function decir(txt) {
-  if (!sinte) return;
-  try { const u = new SpeechSynthesisUtterance(txt); u.lang = 'en-US'; u.rate = 0.85; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) {}
+  if (!sinte) return Promise.resolve();
+  return new Promise((listo) => {
+    try {
+      const u = new SpeechSynthesisUtterance(txt); u.lang = 'en-US'; u.rate = 0.85; u.onend = listo; u.onerror = listo;
+      speechSynthesis.cancel(); speechSynthesis.speak(u); setTimeout(listo, 20000);
+    } catch (e) { listo(); }
+  });
 }
+/* Cuando la persona deja de hablar, el mensaje se envía solo. */
+function finDeDictado() { if (chat && chat.porVoz && !chat.ocupado && vista === 'hablar' && (chat.borrador || '').trim()) mandar(); else if (chat) chat.porVoz = false; }
 const mezclar = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const CONTR = { "i'm": 'i am', 'im': 'i am', "don't": 'do not', 'dont': 'do not', "doesn't": 'does not', 'doesnt': 'does not', "isn't": 'is not', "aren't": 'are not', "can't": 'cannot', 'cant': 'cannot', "it's": 'it is', "he's": 'he is', "she's": 'she is', "we're": 'we are', "they're": 'they are', "you're": 'you are', "what's": 'what is', "where's": 'where is', "that's": 'that is', "wasn't": 'was not', "weren't": 'were not', "didn't": 'did not', 'didnt': 'did not', "couldn't": 'could not', "shouldn't": 'should not' };
 const limpio = (s) => s.toLowerCase().replace(/[.,!?¡¿]/g, '').replace(/’/g, "'").replace(/\s+/g, ' ').trim().split(' ').map((w) => CONTR[w] || w).join(' ').replace(/can not/g, 'cannot');
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const app = document.getElementById('app');
+/* Lo que se ve en pantalla va en inglés. El español queda solo donde hace falta para entender una palabra nueva. */
+const NOMBRES = {
+  'Primeras palabras': 'First words', 'Letras y sonidos': 'Letters and sounds', 'Arma tu primera frase': 'Your first sentence',
+  'Cosas y artículos': 'Things: a, an, the', 'Describe personas y cosas': 'Describe people and things', 'Pronombres': 'Pronouns',
+  'Verbos en presente': 'Present verbs', 'Preguntas y respuestas': 'Questions and answers', 'Hablar del pasado': 'The past',
+  'Dónde y cuándo': 'Where and when', 'Comparar': 'Compare', 'Unir ideas': 'Connect ideas',
+  'Saludos': 'Greetings', 'Yo soy, tú eres': 'I am, you are', 'Mi día': 'My day', 'Repaso': 'Review', 'El abecedario': 'The alphabet',
+  'Sonidos nuevos': 'New sounds', 'Del 1 al 10': 'From 1 to 10', 'Colores': 'Colors', 'Quién, acción, qué': 'Who, action, what',
+  'Decir que no': 'Say no', 'Más acciones': 'More actions', 'Y, o, también': 'And, or, too', 'A y an': 'A and an',
+  'Uno y muchos': 'One and many', 'Cerca y lejos': 'Near and far', 'Cómo es': 'What is it like', 'Cómo estás': 'How are you',
+  'Cada cuánto': 'How often', 'Mucho y poco': 'Many and few', 'De quién es': 'Whose is it', 'Alguien y nadie': 'Someone and nobody',
+  'La s de he y she': 'The s of he and she', 'Mi rutina': 'My routine', 'Él no, ella no': "He doesn't, she doesn't", 'Ahora mismo': 'Right now',
+  'Preguntar con to be': 'Questions with to be', 'Preguntar con do': 'Questions with do', 'Respuestas cortas': 'Short answers',
+  'Conocer a alguien': 'Meet someone', 'Was y were': 'Was and were', 'Pasado con ed': 'Past with ed', 'Pasados que cambian': 'Irregular past',
+  "Did y didn't": "Did and didn't", 'Can y could': 'Can and could', 'Must y have to': 'Must and have to', 'Pedir permiso': 'Ask permission',
+  'Dónde está': 'Where is it', 'Días y horas': 'Days and hours', 'Hacia dónde': 'Which way', 'Antes y después': 'Before and after',
+  'Más que': 'More than', 'Más con more': 'More with more', 'El mejor y el peor': 'The best and the worst', 'Igual que': 'The same as',
+  'Contar en orden': 'Tell it in order', 'Si pasa esto': 'If this happens', 'Aunque y mientras': 'Although and while', 'Dar tu opinión': 'Give your opinion' };
+const tr = (s) => NOMBRES[s] || s;
+const PREGUNTAS_EN = [
+  [/^Completa: /, 'Complete: '], [/^¿Cómo se dice «(.+)»\?$/, 'How do you say «$1»?'], [/^¿Qué significa «(.+)»\?$/, 'What does «$1» mean?'],
+  [/^¿Cuál es el plural de «(.+)»\?$/, 'What is the plural of «$1»?'], [/^¿Cuál es el pasado de «(.+)»\?$/, 'What is the past of «$1»?'],
+  [/^¿Cuál frase está bien ordenada\?$/, 'Which sentence is correct?'], [/^¿Qué número sigue\? /, 'What number is next? '],
+  [/^¿Cuánto es five más five\?$/, 'How much is five plus five?'], [/^¿Qué letra se llama «ei» en inglés\?$/, 'Which letter sounds like «ei»?'] ];
+const enq = (q) => PREGUNTAS_EN.reduce((s, par) => s.replace(par[0], par[1]), q);
 
 /* ---------- Inicio: una sola unidad a la vista, sin scroll ---------- */
 let verU = null;
@@ -816,9 +853,9 @@ function inicio() {
   const completa = u.lecciones.every((l) => est.hechas[l.id]);
   const hoyListo = est.ultimo === dia(0);
   const racha = (est.ultimo === dia(0) || est.ultimo === dia(1)) ? est.racha : 0;
-  let pista = 'Termina esta unidad para descubrir la siguiente.';
-  if (completa && abierta(prox)) pista = prox.nivel !== u.nivel ? `Nivel ${u.nivel} completo. Descubriste el nivel ${prox.nivel}.` : 'Unidad completa. Toca la flecha para seguir.';
-  else if (completa) pista = 'Completaste todo lo disponible. Pronto llegan más unidades.';
+  let pista = 'Finish this unit to unlock the next one.';
+  if (completa && abierta(prox)) pista = prox.nivel !== u.nivel ? `Level ${u.nivel} complete. You unlocked level ${prox.nivel}.` : 'Unit complete. Tap the arrow to continue.';
+  else if (completa) pista = 'You finished everything. More units are coming soon.';
   app.innerHTML = `
     <header class="cabecera">
       <img src="${CARA}" alt="">
@@ -830,14 +867,14 @@ function inicio() {
       <section class="saludo">
         <img src="${OSO}" alt="Osito saluda con los brazos abiertos">
         <div>
-          <h2>${hoyListo ? 'Ya practicaste hoy' : (est.xp ? 'Cuida tu racha hoy' : 'Hello! Soy Osito')}</h2>
-          <div class="meta"><div class="barra"><i style="width:${Math.max(1.5, n / META * 100)}%"></i></div><small>${n} de ${META} palabras</small></div>
+          <h2>${hoyListo ? "You practiced today" : (est.xp ? "Keep your streak today" : "Hello! I'm Osito")}</h2>
+          <div class="meta"><div class="barra"><i style="width:${Math.max(1.5, n / META * 100)}%"></i></div><small>${n} of ${META} words</small></div>
         </div>
       </section>
-      <button class="boton rosa" id="hablar">${I.chat} Habla con Osito</button>
+      <button class="boton rosa" id="hablar">${I.chat} Talk with Osito</button>
       <div class="pager">
         <button class="flecha" id="antes" aria-label="Unidad anterior" ${verU === 0 ? 'disabled' : ''}>${I.izq}</button>
-        <div class="unidad"><b>Nivel ${u.nivel} · Unidad ${u.num}</b><span>${u.n}</span></div>
+        <div class="unidad"><b>Level ${u.nivel} · Unit ${u.num}</b><span>${tr(u.n)}</span></div>
         <button class="flecha" id="despues" aria-label="${abierta(prox) ? 'Unidad siguiente' : 'Unidad siguiente, aún cerrada'}" ${abierta(prox) ? '' : 'disabled'}>${abierta(prox) ? I.der : I.candado}</button>
       </div>
       <div class="camino rejilla">
@@ -845,12 +882,12 @@ function inicio() {
           const i = LECCIONES.indexOf(l), hecha = est.hechas[l.id], actual = i === sig, cerrada = !hecha && !actual;
           return `<button class="parada ${hecha ? 'hecha' : actual ? 'actual' : 'cerrada'}" data-i="${i}" ${cerrada ? 'disabled aria-disabled="true"' : ''}>
             <span class="bola">${hecha ? I.check : cerrada ? I.candado : I.estrella}</span>
-            <span class="nombre">${l.nombre}</span>
+            <span class="nombre">${tr(l.nombre)}</span>
           </button>`;
         }).join('')}
       </div>
       <p class="pista">${pista}</p>
-      <div class="fila-enlaces"><button class="enlace" id="borrar">Reiniciar mi progreso</button><button class="enlace" id="cerrar-sesion">Salir</button></div>
+      <div class="fila-enlaces"><button class="enlace" id="borrar">Reset my progress</button><button class="enlace" id="cerrar-sesion">Sign out</button></div>
     </main>`;
   app.querySelectorAll('.parada:not(.cerrada)').forEach((b) => b.onclick = () => empezar(+b.dataset.i));
   app.querySelector('#hablar').onclick = hablar;
@@ -860,7 +897,7 @@ function inicio() {
   const borrar = app.querySelector('#borrar');
   borrar.onclick = () => {
     if (borrar.dataset.seguro) { est = VACIO(); guardar(); verU = null; inicio(); }
-    else { borrar.dataset.seguro = '1'; borrar.textContent = 'Toca otra vez para borrar todo'; }
+    else { borrar.dataset.seguro = '1'; borrar.textContent = 'Tap again to erase everything'; }
   };
 }
 
@@ -868,7 +905,13 @@ function inicio() {
 let ses = null;
 function empezar(i) {
   const l = LECCIONES[i]; vista = "leccion";
-  const pasos = (l.pasos || armar(l)).filter((p) => hayVoz() || p.t !== 'escucha');
+  let pasos = (l.pasos || armar(l)).filter((p) => hayVoz() || p.t !== 'escucha');
+  const ingles = [...new Set(pasos.filter((p) => p.en).map((p) => p.en))];
+  pasos = pasos.map((p) => {
+    if (p.t !== 'escucha' || p.ok === p.en) return p;
+    const otras = mezclar(ingles.filter((x) => x !== p.en)).slice(0, 2);
+    return otras.length < 2 ? p : Object.assign({}, p, { ops: [p.en, ...otras], ok: p.en });
+  });
   ses = { l, cola: pasos.slice(), total: pasos.length, tips: pasos.filter((p) => p.t === 'tip').length, hechos: 0, vidas: 5, fallos: 0, primeras: 0, resp: null, estado: 'pensando' };
   paso();
 }
@@ -879,33 +922,33 @@ function paso() {
   s.resp = null; s.estado = 'pensando';
   let centro = '';
   if (p.t === 'tip') {
-    centro = `<span class="etiqueta">Regla nueva</span><h2 class="pregunta">${esc(p.titulo)}</h2>
-      <div class="tip"><p>${esc(p.cuerpo)}</p><div class="tabla">${p.ej.map((e) =>
+    centro = `<span class="etiqueta">New rule</span><h2 class="pregunta">${esc(tr(s.l.nombre))}</h2>
+      <div class="tip"><button class="enlace ayuda" id="ayuda">Help in Spanish</button><p id="explica" hidden>${esc(p.cuerpo)}</p><div class="tabla">${p.ej.map((e) =>
         `<div>${hayVoz() ? `<button class="altavoz" data-say="${esc(e[0])}" aria-label="Escuchar ${esc(e[0])}">${I.voz}</button>` : ''}<b>${esc(e[0])}</b><span>${esc(e[1])}</span></div>`).join('')}</div></div>`;
   } else if (p.t === 'elige') {
-    centro = `<h2 class="pregunta">${esc(p.q)}</h2>
+    centro = `<h2 class="pregunta">${esc(enq(p.q))}</h2>
       ${p.dice && hayVoz() ? `<div class="escena"><img src="${OSO}" alt=""><div class="burbuja"><button class="altavoz" data-say="${esc(p.dice)}" aria-label="Escuchar">${I.voz}</button>${esc(p.dice)}</div></div>` : ''}
       <div class="opciones">${mezclar(p.ops).map((o) => `<button class="opcion" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div>`;
   } else if (p.t === 'escucha') {
-    centro = `<h2 class="pregunta">¿Qué escuchas?</h2>
+    centro = `<h2 class="pregunta">What do you hear?</h2>
       <div class="escena"><img src="${OSO}" alt=""><div class="burbuja" style="border:0;padding-left:0"><button class="altavoz grande" data-say="${esc(p.en)}" aria-label="Escuchar la frase">${I.voz}</button></div></div>
       <div class="opciones">${mezclar(p.ops).map((o) => `<button class="opcion" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div>`;
   } else if (p.t === 'ordena') {
     const fichas = mezclar(p.en.split(' ').concat(p.extra || []));
     s.fichas = fichas; s.resp = [];
-    centro = `<h2 class="pregunta">Escribe esto en inglés</h2>
+    centro = `<h2 class="pregunta">Write this in English</h2>
       <div class="escena"><img src="${OSO}" alt=""><div class="burbuja">${esc(p.es)}</div></div>
       <div class="renglon" id="renglon" aria-label="Tu frase"></div>
       <div class="banco" id="banco">${fichas.map((f, k) => `<button class="ficha" data-k="${k}">${esc(f)}</button>`).join('')}</div>`;
   } else if (p.t === 'pares') {
     const izq = mezclar(p.pares.map((x) => x[0])), der = mezclar(p.pares.map((x) => x[1]));
-    centro = `<h2 class="pregunta">Une cada palabra con su significado</h2>
+    centro = `<h2 class="pregunta">Match the pairs</h2>
       <div class="pares">${izq.map((a, k) => `<button class="opcion" data-lado="en" data-v="${esc(a)}">${esc(a)}</button><button class="opcion" data-lado="es" data-v="${esc(der[k])}">${esc(der[k])}</button>`).join('')}</div>`;
   } else if (p.t === 'escribe') {
-    centro = `<h2 class="pregunta">Escribe esto en inglés</h2>
+    centro = `<h2 class="pregunta">Write this in English</h2>
       <div class="escena"><img src="${OSO}" alt=""><div class="burbuja">${esc(p.es)}</div></div>
-      <label for="campo" class="etiqueta">Tu respuesta</label>
-      <input class="campo" id="campo" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Escribe en inglés">`;
+      <label for="campo" class="etiqueta">Your answer</label>
+      <input class="campo" id="campo" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type in English">`;
   }
   app.innerHTML = `
     <div class="tope">
@@ -914,11 +957,13 @@ function paso() {
       <span class="dato vidas">${I.corazon}${s.vidas}</span>
     </div>
     <main class="cuerpo">${centro}</main>
-    <footer class="pie" id="pie"><button class="boton ${p.t === 'tip' ? '' : 'verde'}" id="accion" ${p.t === 'tip' ? '' : 'disabled'}>${p.t === 'tip' ? 'Entendido' : 'Comprobar'}</button></footer>`;
+    <footer class="pie" id="pie"><button class="boton ${p.t === 'tip' ? '' : 'verde'}" id="accion" ${p.t === 'tip' ? '' : 'disabled'}>${p.t === 'tip' ? 'Got it' : 'Check'}</button></footer>`;
 
   const accion = app.querySelector('#accion');
   app.querySelector('#salir').onclick = inicio;
   app.querySelectorAll('[data-say]').forEach((b) => b.onclick = () => decir(b.dataset.say));
+  const ayuda = app.querySelector('#ayuda');
+  if (ayuda) ayuda.onclick = () => { app.querySelector('#explica').hidden = false; ayuda.hidden = true; };
   accion.onclick = () => (p.t === 'tip' ? avanzar(true, true) : comprobar());
 
   if (p.t === 'elige' || p.t === 'escucha') {
@@ -983,10 +1028,10 @@ function veredicto(ok, buena, sinCastigo) {
   const fallo = !ok && !sinCastigo;
   if (fallo) s.vidas--;
   pie.className = 'pie ' + (fallo ? 'mal' : 'bien');
-  const frases = ['¡Muy bien!', 'Great job!', '¡Correcto!', 'Well done!'];
-  pie.innerHTML = `<p class="veredicto">${fallo ? 'Casi. Lo repasamos al final.' : frases[s.hechos % frases.length]}</p>
-    ${fallo && buena ? `<p class="correcta">Respuesta correcta: ${esc(buena)}</p>` : ''}
-    <button class="boton ${fallo ? 'peligro' : 'verde'}" id="seguir">Continuar</button>`;
+  const frases = ['Great job!', 'Correct!', 'Well done!', 'Nice!'];
+  pie.innerHTML = `<p class="veredicto">${fallo ? 'Almost. We will review it at the end.' : frases[s.hechos % frases.length]}</p>
+    ${fallo && buena ? `<p class="correcta">Correct answer: ${esc(buena)}</p>` : ''}
+    <button class="boton ${fallo ? 'peligro' : 'verde'}" id="seguir">Continue</button>`;
   const oso = app.querySelector('.escena img');
   if (oso) oso.classList.add(fallo ? 'tiembla' : 'salta');
   const v = app.querySelector('.vidas'); if (v) v.innerHTML = I.corazon + s.vidas;
@@ -1006,10 +1051,10 @@ function avanzar(ok, esTip) {
 function sinVidas() {
   app.innerHTML = `<main class="cuerpo final">
       <img src="${OSO}" alt="" style="animation:none;filter:grayscale(.4)">
-      <h2>Te quedaste sin corazones</h2>
-      <p>No pasa nada. Equivocarse es parte de aprender. Vuelve a intentarlo y verás que ya recuerdas más.</p>
+      <h2>No hearts left</h2>
+      <p>That is okay. Mistakes are part of learning. Try again.</p>
     </main>
-    <footer class="pie"><button class="boton" id="otra">Intentar otra vez</button><button class="enlace" id="volver">Volver al inicio</button></footer>`;
+    <footer class="pie"><button class="boton" id="otra">Try again</button><button class="enlace" id="volver">Back to home</button></footer>`;
   const i = LECCIONES.indexOf(ses.l);
   app.querySelector('#otra').onclick = () => empezar(i);
   app.querySelector('#volver').onclick = inicio;
@@ -1025,24 +1070,24 @@ function final() {
   guardar();
   app.innerHTML = `<main class="cuerpo final">
       <img src="${OSO}" alt="Osito celebra">
-      <h2>${s.fallos === 0 ? '¡Lección perfecta!' : '¡Lección completa!'}</h2>
-      <p>${nueva && s.l.palabras.length ? `Aprendiste ${s.l.palabras.length} palabras nuevas. Ya llevas ${palabrasAprendidas()} de ${META}.` : 'Repasar es lo que hace que no se te olvide.'}</p>
+      <h2>${s.fallos === 0 ? 'Perfect lesson!' : 'Lesson complete!'}</h2>
+      <p>${nueva && s.l.palabras.length ? `You learned ${s.l.palabras.length} new words. You have ${palabrasAprendidas()} of ${META}.` : 'Review helps you remember.'}</p>
       <div class="premios">
-        <div class="premio">Puntos<div>+${puntos}</div></div>
-        <div class="premio">Precisión<div>${precision}%</div></div>
-        <div class="premio">Racha<div>${est.racha} ${est.racha === 1 ? 'día' : 'días'}</div></div>
+        <div class="premio">Points<div>+${puntos}</div></div>
+        <div class="premio">Accuracy<div>${precision}%</div></div>
+        <div class="premio">Streak<div>${est.racha} ${est.racha === 1 ? 'day' : 'days'}</div></div>
       </div>
     </main>
-    <footer class="pie"><button class="boton" id="listo">Continuar</button></footer>`;
+    <footer class="pie"><button class="boton" id="listo">Continue</button></footer>`;
   app.querySelector('#listo').onclick = inicio;
   app.querySelector('#listo').focus();
 }
 
 /* ---------- Conversación con Osito (el servidor habla con Gemini; la clave nunca llega aquí) ---------- */
 const TEMAS = [
-  { id: 'presentate', nombre: 'Preséntate', guia: 'saludos, decir tu nombre y cómo estás', en: 'Hello! I am Osito. What is your name?', es: '¡Hola! Soy Osito. ¿Cómo te llamas?' },
-  { id: 'gustos', nombre: 'Lo que te gusta', guia: 'cosas que te gusta comer, tomar o leer', en: 'Hi! I like apples. What do you like?', es: '¡Hola! Me gustan las manzanas. ¿Qué te gusta a ti?' },
-  { id: 'dia', nombre: 'Tu día', guia: 'qué tienes y qué quieres hoy: trabajo, tiempo, comida', en: 'Good morning! Do you have work today?', es: '¡Buenos días! ¿Tienes trabajo hoy?' }
+  { id: 'presentate', nombre: 'Introduce yourself', guia: 'saludos, decir tu nombre y cómo estás', en: 'Hello! I am Osito. What is your name?', es: '¡Hola! Soy Osito. ¿Cómo te llamas?' },
+  { id: 'gustos', nombre: 'Things you like', guia: 'cosas que te gusta comer, tomar o leer', en: 'Hi! I like apples. What do you like?', es: '¡Hola! Me gustan las manzanas. ¿Qué te gusta a ti?' },
+  { id: 'dia', nombre: 'Your day', guia: 'qué tienes y qué quieres hoy: trabajo, tiempo, comida', en: 'Good morning! Do you have work today?', es: '¡Buenos días! ¿Tienes trabajo hoy?' }
 ];
 let chat = null;
 function nuevoChat(k) { const t = TEMAS[k]; chat = { k, msgs: [{ de: 'oso', en: t.en, es: t.es }], ocupado: false, borrador: '', error: '' }; }
@@ -1054,21 +1099,21 @@ function hablar() {
   app.innerHTML = `
     <div class="tope">
       <button class="cerrar" id="salir" aria-label="Volver al inicio">${I.x}</button>
-      <h1 class="titulo-chat">Habla con Osito</h1>
+      <h1 class="titulo-chat">Talk with Osito</h1>
     </div>
     <main class="cuerpo" id="hilo">
       <div class="temas">${TEMAS.map((t, k) => `<button class="tema ${k === c.k ? 'activo' : ''}" data-k="${k}">${t.nombre}</button>`).join('')}</div>
       <div class="chat">
         ${c.msgs.map((m) => m.de === 'yo'
-          ? `<div class="msj yo">${esc(m.t)}</div>${m.tip ? `<div class="consejo"><b>Mejor así:</b> ${esc(m.tip)}</div>` : ''}`
-          : `<div class="msj oso">${hayVoz() ? `<button class="altavoz" data-say="${esc(m.en)}" aria-label="Escuchar a Osito">${I.voz}</button>` : ''}<div>${esc(m.en)}<small>${esc(m.es || '')}</small></div></div>`).join('')}
-        ${c.ocupado ? '<div class="msj oso"><div>Osito está pensando…</div></div>' : ''}
+          ? `<div class="msj yo">${esc(m.t)}</div>${m.tip ? `<div class="consejo"><b>Better:</b> ${esc(m.tip)}</div>` : ''}`
+          : `<div class="msj oso">${hayVoz() ? `<button class="altavoz" data-say="${esc(m.en)}" aria-label="Escuchar a Osito">${I.voz}</button>` : ''}<div>${esc(m.en)}${m.es ? `<small hidden>${esc(m.es)}</small><button class="enlace ver-trad">Translate</button>` : ''}</div></div>`).join('')}
+        ${c.ocupado ? '<div class="msj oso"><div>Osito is thinking…</div></div>' : ''}
         ${c.error ? `<div class="aviso">${esc(c.error)}</div>` : ''}
       </div>
     </main>
     <footer class="pie"><div class="entrada">
       ${DICT ? `<button class="redondo mic ${oyendo ? 'oyendo' : ''}" id="mic" aria-label="${oyendo ? 'Dejar de escuchar' : 'Hablar por el micrófono'}">${I.mic}</button>` : ''}
-      <input class="campo" id="texto" autocomplete="off" placeholder="${DICT ? 'Habla o escribe en inglés' : 'Escribe en inglés'}" aria-label="Tu mensaje" ${IA ? '' : 'disabled'}>
+      <input class="campo" id="texto" autocomplete="off" placeholder="${DICT ? 'Speak or type in English' : 'Type in English'}" aria-label="Tu mensaje" ${IA ? '' : 'disabled'}>
       <button class="redondo" id="mandar" aria-label="Enviar" ${IA && !c.ocupado ? '' : 'disabled'}>${I.enviar}</button>
     </div></footer>`;
   const texto = app.querySelector('#texto'), hilo = app.querySelector('#hilo');
@@ -1078,17 +1123,20 @@ function hablar() {
   app.querySelector('#salir').onclick = () => { if (DICT && oyendo) DICT.stop().catch(() => {}); inicio(); };
   app.querySelectorAll('.tema').forEach((b) => b.onclick = () => { if (!c.ocupado) { nuevoChat(+b.dataset.k); hablar(); } });
   app.querySelectorAll('[data-say]').forEach((b) => b.onclick = () => decir(b.dataset.say));
+  app.querySelectorAll('.ver-trad').forEach((b) => b.onclick = () => { b.previousElementSibling.hidden = false; b.hidden = true; });
   app.querySelector('#mandar').onclick = mandar;
   const mic = app.querySelector('#mic');
   if (mic) mic.onclick = () => {
     if (oyendo) { DICT.stop().catch(() => {}); return; }
-    DICT.start().catch((e) => { if (e && e.code === 'not_granted') { DICT = null; hablar(); } });
+    c.porVoz = true;
+    DICT.start().catch((e) => { c.porVoz = false; if (e && e.code === 'not_granted') { DICT = null; hablar(); } });
   };
 }
 
 async function mandar() {
   const c = chat, t = (c.borrador || '').trim();
   if (!t || !IA || c.ocupado) return;
+  const porVoz = !!c.porVoz; c.porVoz = false;
   if (DICT && oyendo) DICT.stop().catch(() => {});
   const mio = { de: 'yo', t };
   c.msgs.push(mio); c.borrador = ''; c.ocupado = true; c.error = '';
@@ -1103,16 +1151,16 @@ async function mandar() {
     c.msgs.push({ de: 'oso', en: r.en, es: typeof r.es === 'string' ? r.es : '' });
     if (est.ultimo !== dia(0)) { est.racha = est.ultimo === dia(1) ? est.racha + 1 : 1; est.ultimo = dia(0); }
     est.xp += 2; guardar();
-    decir(r.en);
+    decir(r.en).then(() => { if (porVoz && DICT && chat === c && vista === 'hablar' && !oyendo) { c.porVoz = true; DICT.start().catch(() => { c.porVoz = false; }); } });
   } catch (e) {
     c.msgs.pop(); c.borrador = t;
     const MOTIVOS = {
-      limite_diario: 'Ya usaste tus 60 mensajes de hoy. Mañana seguimos practicando.',
-      descanso: 'Osito necesita un descanso. Intenta de nuevo en un minuto.',
-      no_permitido: 'Tu correo no está en la lista de Osito English.',
-      falta_clave: 'Falta terminar de configurar la conversación en el servidor.',
-      red: 'No hay conexión. Revisa tu internet e intenta otra vez.' };
-    c.error = MOTIVOS[e && e.code] || 'Osito no pudo responder. Toca enviar para intentar otra vez.';
+      limite_diario: 'You used your 60 messages today. See you tomorrow!',
+      descanso: 'Osito needs a break. Try again in a minute.',
+      no_permitido: 'Your email is not on the Osito English list.',
+      falta_clave: 'The conversation is not set up on the server yet.',
+      red: 'No connection. Check your internet and try again.' };
+    c.error = MOTIVOS[e && e.code] || 'Osito could not answer. Tap send to try again.';
   }
   c.ocupado = false;
   if (vista === 'hablar') hablar();
@@ -1125,7 +1173,7 @@ if (Reconocedor) {
   let base = '';
   const pintarMic = () => { const m = app.querySelector('#mic'); if (m) m.classList.toggle('oyendo', oyendo); };
   rec.onstart = () => { oyendo = true; base = chat ? chat.borrador : ''; pintarMic(); };
-  rec.onend = () => { oyendo = false; pintarMic(); };
+  rec.onend = () => { oyendo = false; pintarMic(); setTimeout(finDeDictado, 250); };
   rec.onerror = (e) => { if (e.error === 'not-allowed' || e.error === 'service-not-allowed') { DICT = null; if (vista === 'hablar') hablar(); } };
   rec.onresult = (e) => {
     let dicho = ''; for (const r of e.results) dicho += r[0].transcript;
@@ -1151,13 +1199,13 @@ function pantallaEntrar(mensaje) {
   app.innerHTML = `<main class="cuerpo final">
       <img src="${OSO}" alt="Osito saluda con los brazos abiertos" style="animation:flotar 3s ease-in-out infinite">
       <h2>Osito English</h2>
-      <p>Aprende inglés conmigo, 5 minutos al día.</p>
+      <p>Learn English with me, 5 minutes a day.</p>
       ${mensaje ? `<div class="aviso">${esc(mensaje)}</div>` : ''}
     </main>
-    <footer class="pie"><button class="boton" id="google">Entrar con Google</button><p class="pista" style="margin-top:10px">Solo para personas invitadas.</p></footer>`;
+    <footer class="pie"><button class="boton" id="google">Sign in with Google</button><p class="pista" style="margin-top:10px">Invited people only.</p></footer>`;
   app.querySelector('#google').onclick = () => {
     sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.origin + location.pathname } })
-      .then((r) => { if (r && r.error) pantallaEntrar('No se pudo abrir Google. Intenta otra vez.'); }, () => pantallaEntrar('No se pudo abrir Google. Intenta otra vez.'));
+      .then((r) => { if (r && r.error) pantallaEntrar('Google did not open. Try again.'); }, () => pantallaEntrar('Google did not open. Try again.'));
   };
 }
 
@@ -1165,16 +1213,16 @@ function pantallaSinPermiso(correo) {
   ses = null; vista = 'entrar';
   app.innerHTML = `<main class="cuerpo final">
       <img src="${OSO}" alt="" style="animation:none">
-      <h2>Todavía no estás en la lista</h2>
-      <p>El correo ${esc(correo)} no tiene invitación. Pide a quien te invitó que lo agregue.</p>
+      <h2>You are not on the list yet</h2>
+      <p>The email ${esc(correo)} is not invited. Ask the person who invited you to add it.</p>
     </main>
-    <footer class="pie"><button class="boton claro" id="otra-cuenta">Entrar con otra cuenta</button></footer>`;
+    <footer class="pie"><button class="boton claro" id="otra-cuenta">Use another account</button></footer>`;
   app.querySelector('#otra-cuenta').onclick = () => sb.auth.signOut();
 }
 
 async function entrar(sesion) {
   usuario = sesion.user;
-  app.innerHTML = '<main class="cuerpo final"><p style="margin-top:40%">Abriendo tu progreso…</p></main>';
+  app.innerHTML = '<main class="cuerpo final"><p style="margin-top:40%">Opening your progress…</p></main>';
   let permitido = true, nube = null;
   try {
     const r = await sb.rpc('puedo_entrar');
@@ -1197,7 +1245,7 @@ async function entrar(sesion) {
 }
 
 async function arrancar() {
-  if (!window.supabase) { app.innerHTML = '<main class="cuerpo"><div class="aviso">No se pudo cargar la app. Recarga la página.</div></main>'; return; }
+  if (!window.supabase) { app.innerHTML = '<main class="cuerpo"><div class="aviso">The app could not load. Reload the page.</div></main>'; return; }
   sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_CLAVE_PUBLICA);
   sb.auth.onAuthStateChange((evento, sesion) => {
     // Nunca se llama a Supabase dentro de este aviso: se deja para el siguiente turno.
