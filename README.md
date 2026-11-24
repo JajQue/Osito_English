@@ -25,7 +25,7 @@ App para aprender inglés desde el español, estilo juego, con Osito como mascot
 
 ## Contenido del curso
 
-Niveles A1, A2, B1 y B2 completos: 24 unidades, 119 lecciones, 851 palabras. Falta C1 (5 unidades) para llegar a las 1000. Las unidades y niveles se descubren al terminar los anteriores. Todo el contenido (frases, ejercicios, explicaciones) es original.
+Curso completo de A1 a C1: 29 unidades, 144 lecciones, 1031 palabras y expresiones. La gramática llega hasta C1; el vocabulario propio del curso cubre lo básico, y se amplía con el repaso de vocabulario. Las unidades y niveles se descubren al terminar los anteriores. Todo el contenido (frases, ejercicios, explicaciones) es original.
 
 ## Tareas comunes
 

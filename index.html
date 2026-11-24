@@ -258,7 +258,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--tinta); out
 <script>
 const OSO = 'oso.jpg';
 const CARA = 'cara.jpg';
-const META = 1000;
+let META = 1000;
 
 const I = {
   fuego: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c1 4 5 5.500 5 10.500A5 5 0 0 1 7 12.500c0-1.500.6-2.800 1.500-3.800.3 1.600 1 2.300 1.800 2.300C10 8 10.500 5 12 2z"/><\/svg>',
@@ -1013,6 +1013,142 @@ const CONECTORES_B2 = [
     [['Completa: I study in ___ to learn','order',['so','that']],['Completa: Speak slowly so ___ I understand','that',['to','as']]])
 ];
 
+/* ===== Nivel C1 ===== */
+const ESTRUCTURAS = [
+  G('inversion', 'Inversion',
+    [['Rarely','Rara vez'],['Seldom','Casi nunca'],['Hardly','Apenas'],['Scarcely','Apenas (formal)'],['No sooner','Apenas... cuando'],['Not only','No solo'],['Under no circumstances','Bajo ninguna circunstancia'],['Little','Poco (con sentido negativo)'],['Nowhere','En ningún lugar']],
+    ['Inversion', 'Cuando una frase empieza con una palabra negativa o limitante, el orden se invierte como en una pregunta: Never have I seen this. Suena formal y da fuerza.',
+      [['Never have I seen this','Nunca había visto esto'],['Rarely does he call','Rara vez llama'],['Not only is it cheap, it is good','No solo es barato, es bueno'],['Little did I know','Poco sabía yo']]],
+    [['Rara vez él llama','Rarely does he call'],['Nunca he visto algo así','Never have I seen such a thing'],['Poco sabía yo la verdad','Little did I know the truth'],['No solo canta sino que también baila','Not only does she sing but she also dances'],['En ningún lugar encontrarás algo mejor','Nowhere will you find anything better']],
+    [['Completa: Never ___ I seen such a thing','have',['am','did']],['Completa: Rarely ___ he call me','does',['is','has']]]),
+  G('resaltar', 'Cleft sentences',
+    [['What I need','Lo que necesito'],['The reason why','La razón por la que'],['The thing that','La cosa que'],['It was then','Fue entonces'],['All I want','Todo lo que quiero'],['Precisely','Precisamente'],['Exactly','Exactamente'],['Main','Principal'],['Point','Punto (idea)']],
+    ['Cleft sentences', 'Para resaltar una parte de la frase se la separa: What I need is time. It was Ana who called. Así queda claro qué es lo importante.',
+      [['What I need is time','Lo que necesito es tiempo'],['It was Ana who called','Fue Ana quien llamó'],['All I want is to rest','Todo lo que quiero es descansar'],['The reason why I came is you','La razón por la que vine eres tú']]],
+    [['Lo que necesito es tiempo','What I need is time'],['Fue mi hermano quien llamó','It was my brother who called'],['Todo lo que quiero es descansar','All I want is to rest'],['Ese es exactamente mi punto','That is exactly my point'],['La razón principal es el dinero','The main reason is money']],
+    [['Completa: ___ I need is more time','What',['That','Which']],['Completa: It was Ana ___ called','who',['what','which']]]),
+  G('enfasis', 'Emphasis',
+    [['Such','Tal'],['Indeed','En efecto'],['Absolutely','Absolutamente'],['Utterly','Totalmente'],['Entirely','Enteramente'],['Highly','Altamente'],['Deeply','Profundamente'],['By far','Por mucho'],['At all','En absoluto']],
+    ['Emphasis', 'Para dar fuerza a un verbo se pone do, does o did delante: I do like it. So va con adjetivos y such con sustantivos: so tired, such a long day.',
+      [['I do like it','Sí que me gusta'],['It was such a long day','Fue un día tan largo'],['I am so tired','Estoy tan cansado'],['It is by far the best','Es por mucho el mejor']]],
+    [['A mí sí me gusta el café','I do like coffee'],['Fue un día tan largo','It was such a long day'],['Es por mucho el mejor libro','It is by far the best book'],['No me gusta en absoluto',"I don't like it at all"],['Estoy profundamente agradecido','I am deeply grateful']],
+    [['Completa: It was ___ a long day','such',['so','very']],['Completa: I ___ like it, believe me','do',['am','so']]]),
+  G('acortar', 'Shorter sentences',
+    [['Having finished','Habiendo terminado'],['Being','Siendo'],['Considering','Considerando'],['Provided that','Siempre y cuando'],['Regarding','Con respecto a'],['Concerning','En lo que concierne a'],['Assuming','Asumiendo'],['Judging by','A juzgar por'],['Generally speaking','En términos generales']],
+    ['Shorter sentences', 'Una frase larga se acorta empezando con un verbo en ing o un participio: Having finished the work, I went home. Es propio del inglés escrito.',
+      [['Having finished, I went home','Habiendo terminado, me fui a casa'],['Being tired, she slept','Como estaba cansada, durmió'],['Judging by his face, he is happy','A juzgar por su cara, está feliz'],['Generally speaking, it works','En términos generales, funciona']]],
+    [['Habiendo terminado el trabajo me fui a casa','Having finished the work I went home'],['Como estaba cansada ella durmió temprano','Being tired she slept early'],['Considerando el clima nos quedamos','Considering the weather we stayed'],['En términos generales es una buena idea','Generally speaking it is a good idea'],['Tengo una pregunta con respecto al examen','I have a question regarding the exam']],
+    [['Completa: ___ finished the work, I went home','Having',['Have','Had']],['Completa: ___ tired, she went to bed','Being',['Been','Be']]])
+];
+
+const EXPRESIONES = [
+  G('modismos-trabajo', 'Work idioms',
+    [['Call it a day','Dar por terminado el día'],['Get the ball rolling','Poner algo en marcha'],['Back to square one','Volver a empezar'],['Cut corners','Hacer las cosas a medias'],['On the same page','En la misma sintonía'],['Think outside the box','Pensar distinto'],['Learn the ropes','Aprender el oficio'],['Ahead of schedule','Adelantado'],['Behind schedule','Atrasado']],
+    ['Work idioms', 'En el trabajo se usan muchas frases hechas. On the same page significa que todos entienden lo mismo; call it a day es dejar de trabajar por hoy.',
+      [["Let's call it a day",'Dejémoslo por hoy'],['We are on the same page','Estamos en la misma sintonía'],['We are behind schedule','Vamos atrasados'],['Back to square one','De vuelta al inicio']]],
+    [['Dejémoslo por hoy',"Let's call it a day"],['Nosotros estamos en la misma sintonía','We are on the same page'],['El plan va atrasado','The plan is behind schedule'],['Tenemos que volver a empezar','We are back to square one'],['Ella aprendió el oficio muy rápido','She learned the ropes very fast']],
+    [["Completa: I am tired. Let's call it a ___",'day',['night','time']],['Completa: We agree. We are on the same ___','page',['book','line']]]),
+  G('modismos-gente', 'People idioms',
+    [['Down to earth','Con los pies en la tierra'],['Heart of gold','Corazón de oro'],['Cold feet','Miedo de último momento'],['See eye to eye','Estar de acuerdo en todo'],["Pull someone's leg",'Tomarle el pelo a alguien'],['Keep in touch','Mantenerse en contacto'],['Lose touch','Perder el contacto'],['Get on my nerves','Sacarme de quicio'],['Hit it off','Caerse bien de inmediato']],
+    ['People idioms', "Muchos modismos describen a la gente. To pull someone's leg no es jalar la pierna: es bromear. Cold feet es arrepentirse por nervios antes de algo importante.",
+      [['She has a heart of gold','Ella tiene un corazón de oro'],['Keep in touch','Mantente en contacto'],['We see eye to eye','Estamos de acuerdo'],['You are pulling my leg','Me estás tomando el pelo']]],
+    [['Ella tiene un corazón de oro','She has a heart of gold'],['Nosotros nos mantenemos en contacto','We keep in touch'],['Él tiene los pies en la tierra','He is very down to earth'],['Ese ruido me saca de quicio','That noise gets on my nerves'],['Perdimos el contacto hace años','We lost touch years ago']],
+    [['Completa: She is kind. She has a heart of ___','gold',['stone','glass']],['Completa: Call me! Keep in ___','touch',['hand','voice']]]),
+  G('modismos-tiempo', 'Time and money',
+    [['Time flies','El tiempo vuela'],['Better late than never','Más vale tarde que nunca'],['In the long run','A la larga'],['In the nick of time','Justo a tiempo'],['Around the clock','Las 24 horas'],['For the time being','Por el momento'],['Make ends meet','Llegar a fin de mes'],['Worth it','Valer la pena'],['Rainy day','Tiempos difíciles']],
+    ['Time and money', 'El tiempo y el dinero tienen sus propias frases. To save for a rainy day es ahorrar para cuando haga falta; in the long run mira hacia el futuro.',
+      [['Time flies','El tiempo vuela'],['It is worth it','Vale la pena'],['In the long run, it is cheaper','A la larga es más barato'],['Save for a rainy day','Ahorra para tiempos difíciles']]],
+    [['El tiempo vuela','Time flies'],['A la larga vale la pena','In the long run it is worth it'],['Ellos trabajan las 24 horas','They work around the clock'],['Por el momento vivo aquí','For the time being I live here'],['Llegamos justo a tiempo','We arrived in the nick of time']],
+    [['Completa: Better late than ___','never',['ever','later']],['Completa: It is expensive, but it is ___ it','worth',['cost','value']]]),
+  G('frases-naturales', 'Sound natural',
+    [['No wonder','Con razón'],['No way','De ninguna manera'],['Fair enough','Me parece justo'],['Never mind','No importa'],['By the way','Por cierto'],['As a matter of fact','De hecho (con énfasis)'],['So to speak','Por así decirlo'],['For good','Para siempre'],['From scratch','Desde cero']],
+    ['Sound natural', 'Estas frases cortas hacen que suenes natural al conversar. By the way cambia de tema; never mind quita importancia a algo.',
+      [['By the way, I called her','Por cierto, la llamé'],['Never mind','No importa'],['No wonder you are tired','Con razón estás cansado'],['Fair enough','Me parece justo']]],
+    [['Por cierto yo llamé a tu madre','By the way I called your mother'],['Con razón estás cansado','No wonder you are tired'],['Empezamos desde cero','We started from scratch'],['Ella se fue para siempre','She left for good'],['No importa yo lo hago','Never mind I will do it']],
+    [['Completa: By the ___, I called her','way',['road','time']],['Completa: We built it from ___','scratch',['zero','start']]])
+];
+
+const ESTILO = [
+  G('formal', 'Formal words',
+    [['Obtain','Obtener'],['Purchase','Adquirir'],['Assist','Asistir (ayudar)'],['Inform','Informar'],['Enquire','Consultar'],['Commence','Dar inicio'],['Terminate','Dar por terminado'],['Reside','Residir'],['Depart','Partir (formal)']],
+    ['Formal words', 'El inglés formal prefiere una sola palabra de origen latino; el informal, un verbo corto: get pasa a obtain, buy a purchase, help a assist.',
+      [['Get, obtain','Conseguir, obtener'],['Buy, purchase','Comprar, adquirir'],['Help, assist','Ayudar, asistir'],['Start, commence','Empezar, dar inicio']]],
+    [['Usted puede obtener más información aquí','You can obtain further information here'],['Yo deseo adquirir dos boletos','I wish to purchase two tickets'],['Nosotros le informaremos mañana','We will inform you tomorrow'],['El tren parte a las seis','The train departs at six'],['Ella reside en esta ciudad','She resides in this city']],
+    [['¿Cuál es la forma formal de «buy»?','purchase',['obtain','assist']],['¿Cuál es la forma formal de «help»?','assist',['depart','reside']]]),
+  G('suavizar', 'Soften what you say',
+    [['Tend to','Tender a'],['Appear to','Parecer (formal)'],['Somewhat','Algo (un poco)'],['Arguably','Podría decirse'],['Apparently','Al parecer'],['Presumably','Presumiblemente'],['Roughly','Aproximadamente'],['To some extent','Hasta cierto punto'],['In general','En general']],
+    ['Soften what you say', 'En textos serios no se afirma todo con total seguridad. Se suaviza con palabras como tend to, apparently o to some extent.',
+      [['Prices tend to rise','Los precios tienden a subir'],['Apparently, he left','Al parecer, se fue'],['It is somewhat difficult','Es algo difícil'],['To some extent, I agree','Hasta cierto punto, estoy de acuerdo']]],
+    [['Los niños tienden a aprender rápido','Children tend to learn fast'],['Al parecer él ya se fue','Apparently he has already left'],['Hasta cierto punto estoy de acuerdo','To some extent I agree'],['Es algo difícil de explicar','It is somewhat difficult to explain'],['Había aproximadamente cien personas','There were roughly a hundred people']],
+    [['Completa: People ___ to forget names','tend',['appear to','likely']],['Completa: To some ___, I agree','extent',['point','part']]]),
+  G('no-repetir', 'Avoid repeating',
+    [['The former','El primero (de dos)'],['The latter','El segundo (de dos)'],['Likewise','Del mismo modo'],['Similarly','De forma similar'],['The above','Lo anterior'],['As follows','Como sigue'],['Namely','A saber'],['Respectively','Respectivamente'],['Aforementioned','Antes mencionado']],
+    ['Avoid repeating', 'Para no repetir palabras, el inglés escrito usa referencias: the former es el primero que mencionaste y the latter, el segundo.',
+      [['The former is cheap, the latter is fast','El primero es barato, el segundo es rápido'],['Likewise, we agree','Del mismo modo, estamos de acuerdo'],['The rules are as follows','Las reglas son las siguientes'],['Two people, namely Ana and Luis','Dos personas, a saber Ana y Luis']]],
+    [['Las reglas son las siguientes','The rules are as follows'],['El primero es barato y el segundo es rápido','The former is cheap and the latter is fast'],['Del mismo modo nosotros estamos de acuerdo','Likewise we agree'],['Ana y Luis tienen diez y doce años respectivamente','Ana and Luis are ten and twelve respectively'],['De forma similar el segundo plan falló','Similarly the second plan failed']],
+    [['Completa: Tea and coffee: the former is cheap, the ___ is strong','latter',['later','last']],['Completa: The rules are as ___','follows',['follow','following']]]),
+  G('escribir', 'Writing a text',
+    [['Paragraph','Párrafo'],['Summary','Resumen'],['Introduction','Introducción'],['Argument','Argumento'],['Statement','Declaración'],['Draft','Borrador'],['Outline','Esquema'],['Tone','Tono'],['Audience','Público']],
+    ['Writing a text', 'Un buen texto en inglés tiene introducción, un argumento por párrafo y un resumen final. El tono cambia según el público: no se escribe igual a un amigo que a un jefe.',
+      [['Write a short summary','Escribe un resumen corto'],['The first paragraph','El primer párrafo'],['Change the tone','Cambia el tono'],['Know your audience','Conoce a tu público']]],
+    [['Escribe un resumen corto del libro','Write a short summary of the book'],['El primer párrafo es la introducción','The first paragraph is the introduction'],['Tu argumento es muy bueno','Your argument is very good'],['Este es solo un borrador','This is only a draft'],['El tono depende del público','The tone depends on the audience']],
+    [['Completa: Write one idea in each ___','paragraph',['tone','audience']],['Completa: This is only a ___, not the final text','draft',['summary','statement']]])
+];
+
+const MATICES = [
+  G('solia', 'Used to',
+    [['Used to','Solía'],['Be used to','Estar acostumbrado a'],['Get used to','Acostumbrarse a'],['Habit','Hábito'],['Childhood','Infancia'],['Memory','Recuerdo'],['No longer','Ya no'],['Anymore','Ya no (al final de la frase)'],['Nowadays','Hoy en día']],
+    ['Used to', 'Used to + verbo es algo que hacías antes y ya no. Be used to + ing es estar acostumbrado. No se parecen: I used to run (antes corría) y I am used to running (estoy acostumbrado a correr).',
+      [['I used to play here','Yo solía jugar aquí'],['I am used to getting up early','Estoy acostumbrado a levantarme temprano'],['You will get used to it','Te vas a acostumbrar'],['She no longer lives here','Ella ya no vive aquí']]],
+    [['Yo solía jugar aquí','I used to play here'],['Tú te vas a acostumbrar','You will get used to it'],['Ella ya no vive aquí','She no longer lives here'],['Hoy en día todos tienen un teléfono','Nowadays everyone has a phone'],['Tengo buenos recuerdos de mi infancia','I have good memories of my childhood']],
+    [['Completa: I ___ to play here as a child','used',['use','using']],['Completa: I am used to ___ up early','getting',['get','got']]]),
+  G('pasado-o-perfecto', 'Did or have done',
+    [['Up to now','Hasta este momento'],['In my life','En mi vida'],['At the time','En aquel entonces'],['Back then','En ese tiempo'],['In those days','En aquellos días'],['Ever since','Desde entonces (sin parar)'],['To date','Hasta la fecha'],['Over the years','A lo largo de los años'],['This morning','Esta mañana']],
+    ['Did or have done', 'Si dices cuándo pasó, usa el pasado simple: I saw him yesterday. Si no importa cuándo o sigue siendo verdad hoy, el presente perfecto: I have seen him.',
+      [['I saw him yesterday','Lo vi ayer'],['I have seen him before','Lo he visto antes'],['Back then, we had no phone','En ese tiempo no teníamos teléfono'],['Over the years, I have learned a lot','A lo largo de los años he aprendido mucho']]],
+    [['En ese tiempo no teníamos teléfono','Back then we had no phone'],['A lo largo de los años he aprendido mucho','Over the years I have learned a lot'],['Yo lo vi esta mañana','I saw him this morning'],['He vivido aquí desde entonces','I have lived here ever since'],['Es el mejor libro que he leído en mi vida','It is the best book I have read in my life']],
+    [['Completa: I ___ him yesterday','saw',['have seen','see']],['Completa: I ___ never been to Asia','have',['did','was']]]),
+  G('iba-a', 'Was going to',
+    [['Was going to','Iba a'],['About to','A punto de'],['On the verge of','Al borde de'],['Meant to','Tenía la intención de'],['Due','Previsto (para una fecha)'],['Bound to','Destinado a'],['Likely to','Con probabilidad de'],['Intend','Tener la intención'],['Postpone','Aplazar']],
+    ['Was going to', 'Para un plan que tenías y no se cumplió: was going to. Para algo que estaba por ocurrir: was about to. I was about to call you when you arrived.',
+      [['I was going to call you','Iba a llamarte'],['I was about to leave','Estaba a punto de salir'],['It is bound to happen','Tiene que pasar'],['The train is due at six','El tren está previsto para las seis']]],
+    [['Yo iba a llamarte ayer','I was going to call you yesterday'],['Yo estaba a punto de salir','I was about to leave'],['El tren está previsto para las seis','The train is due at six'],['Yo tenía la intención de escribirte','I meant to write to you'],['Tuvimos que aplazar el viaje','We had to postpone the trip']],
+    [['Completa: I was ___ to leave when you called','about',['going','due']],['Completa: I was ___ to call you, but I forgot','going',['about','went']]]),
+  G('estados', 'State verbs',
+    [['Belong','Pertenecer'],['Own','Poseer'],['Contain','Contener'],['Consist','Consistir'],['Involve','Involucrar'],['Deserve','Merecer'],['Prefer','Preferir'],['Recognize','Reconocer'],['Matter','Importar']],
+    ['State verbs', 'Algunos verbos describen estados, no acciones, y casi nunca van con ing: se dice I know, I prefer, It belongs to me. No se dice I am knowing.',
+      [['It belongs to me','Me pertenece'],['I prefer tea','Prefiero el té'],['It does not matter','No importa'],['You deserve it','Te lo mereces']]],
+    [['Este libro me pertenece','This book belongs to me'],['Yo prefiero el té','I prefer tea'],['Tú te lo mereces','You deserve it'],['La caja contiene diez libros','The box contains ten books'],['Eso no importa ahora','That does not matter now']],
+    [['Completa: This bag ___ to me','belongs',['is belonging','belong']],['Completa: I ___ what you mean','know',['am knowing','knowing']]])
+];
+
+const COHESION = [
+  G('conceder', 'Yes, but',
+    [['Albeit','Aunque (formal)'],['Notwithstanding','No obstante'],['Nonetheless','Aun así'],['Even so','Incluso así'],['All the same','De todas formas'],['Granted','Es cierto que'],['Admittedly','Hay que admitir que'],['Much as','Por mucho que'],['However much','Por más que']],
+    ['Yes, but', 'Para aceptar un punto y luego contradecirlo: Admittedly, it is expensive; nonetheless, it is worth it. Albeit es un «aunque» muy formal y corto.',
+      [['It was good, albeit short','Fue bueno, aunque corto'],['Admittedly, it is expensive','Hay que admitir que es caro'],['Even so, I will go','Incluso así, iré'],['Much as I like it, I cannot','Por mucho que me guste, no puedo']]],
+    [['Hay que admitir que es caro','Admittedly it is expensive'],['Incluso así yo iré','Even so I will go'],['Fue un buen viaje aunque corto','It was a good trip albeit short'],['Aun así ella estaba feliz','Nonetheless she was happy'],['De todas formas gracias por venir','All the same thank you for coming']],
+    [['Completa: It was a good film, ___ a little long','albeit',['despite','granted']],['Completa: It is expensive. Even ___, I will buy it','so',['though','if']]]),
+  G('limites', 'Limits and exceptions',
+    [['As far as','Hasta donde'],['Insofar as','En la medida en que'],['Apart from','Aparte de'],['Aside from','Además de'],['Other than','Salvo'],['Save for','Salvo por'],['On condition that','A condición de que'],['In the event of','En caso de'],['Regardless of','Sin importar']],
+    ['Limits and exceptions', 'Para poner límites a lo que dices: as far as I know (hasta donde sé), apart from (aparte de), regardless of (sin importar).',
+      [['As far as I know','Hasta donde yo sé'],['Apart from that, it is fine','Aparte de eso, está bien'],['Regardless of the price','Sin importar el precio'],['In the event of fire','En caso de fuego']]],
+    [['Hasta donde yo sé él vive aquí','As far as I know he lives here'],['Aparte de eso todo está bien','Apart from that everything is fine'],['Yo lo compraré sin importar el precio','I will buy it regardless of the price'],['En caso de fuego use la puerta','In the event of fire use the door'],['No tengo nada salvo tiempo','I have nothing other than time']],
+    [['Completa: As ___ as I know, he lives here','far',['long','much']],['Completa: I will go regardless ___ the weather','of',['from','to']]]),
+  G('resumir', 'Sum it up',
+    [['To sum up','En resumen'],['Overall','En conjunto'],['On the whole','En general (como balance)'],['In short','En pocas palabras'],['All in all','Considerándolo todo'],['Ultimately','En última instancia'],['In essence','En esencia'],['To conclude','Para concluir'],['In a nutshell','En dos palabras']],
+    ['Sum it up', 'Para cerrar un texto o una charla: to sum up y in short resumen; ultimately da la conclusión final; all in all hace el balance.',
+      [['To sum up, it works','En resumen, funciona'],['All in all, a good year','Considerándolo todo, un buen año'],['In short, we need help','En pocas palabras, necesitamos ayuda'],['Ultimately, it is your choice','En última instancia, es tu elección']]],
+    [['En resumen el plan funciona','To sum up the plan works'],['En pocas palabras necesitamos ayuda','In short we need help'],['En última instancia es tu elección','Ultimately it is your choice'],['Considerándolo todo fue un buen año','All in all it was a good year'],['En conjunto estoy feliz con el resultado','Overall I am happy with the result']],
+    [['Completa: To ___ up, the plan works','sum',['add','end']],['Completa: All in ___, it was a good year','all',['whole','short']]]),
+  G('opinar', 'Your point of view',
+    [['Frankly','Francamente'],['Honestly','Sinceramente'],['Basically','Básicamente'],['Obviously','Obviamente'],['Personally','Personalmente'],['Surprisingly','Sorprendentemente'],['Luckily','Por suerte'],['Sadly','Tristemente'],['Hopefully','Ojalá']],
+    ['Your point of view', 'Una sola palabra al inicio dice cómo ves lo que vas a contar: luckily (por suerte), frankly (francamente), hopefully (ojalá).',
+      [['Luckily, nobody was injured','Por suerte, nadie resultó herido'],['Frankly, I do not know','Francamente, no lo sé'],['Hopefully, it will not rain','Ojalá no llueva'],['Personally, I prefer tea','Personalmente, prefiero el té']]],
+    [['Por suerte nadie resultó herido','Luckily nobody was injured'],['Francamente yo no lo sé','Frankly I do not know'],['Ojalá no llueva mañana','Hopefully it will not rain tomorrow'],['Personalmente yo prefiero el té','Personally I prefer tea'],['Básicamente es la misma idea','Basically it is the same idea']],
+    [['Completa: ___, nobody was injured. We were lucky','Luckily',['Sadly','Frankly']],['Completa: ___, I prefer tea. That is my opinion','Personally',['Luckily','Obviously']]])
+];
+
 /* Arma los ejercicios de una lección compacta o de un repaso. */
 function armar(l) {
   let v, f, c, tip = null;
@@ -1069,10 +1205,14 @@ const CURSO = [
     { n: 'Idioms and vocabulary', lecciones: [...MODISMOS, R('repaso-modismos', MODISMOS)] },
     { n: 'Complex connectors', lecciones: [...CONECTORES_B2, R('repaso-conectores-b2', CONECTORES_B2)] } ] },
   { nivel: 'C1', nombre: 'Avanzado', unidades: [
-    { n: 'Estructuras avanzadas' }, { n: 'Expresiones idiomáticas' }, { n: 'Estilo y coherencia' },
-    { n: 'Matices de los tiempos' }, { n: 'Conectores avanzados' } ] }
+    { n: 'Advanced structures', lecciones: [...ESTRUCTURAS, R('repaso-estructuras', ESTRUCTURAS)] },
+    { n: 'Idiomatic expressions', lecciones: [...EXPRESIONES, R('repaso-expresiones', EXPRESIONES)] },
+    { n: 'Style and register', lecciones: [...ESTILO, R('repaso-estilo', ESTILO)] },
+    { n: 'Tense nuances', lecciones: [...MATICES, R('repaso-matices', MATICES)] },
+    { n: 'Advanced connectors', lecciones: [...COHESION, R('repaso-cohesion', COHESION)] } ] }
 ];
 const LECCIONES = CURSO.flatMap((n) => n.unidades.flatMap((u) => u.lecciones || []));
+META = LECCIONES.reduce((n, l) => n + l.palabras.length, 0);
 const UNIDADES = CURSO.flatMap((n) => n.unidades.map((u, k) => Object.assign({ nivel: n.nivel, nivelNombre: n.nombre, num: k + 1, de: n.unidades.length }, u)));
 
 /* ---------- Estado guardado en este navegador ---------- */
@@ -1139,7 +1279,7 @@ const PREGUNTAS_EN = [
   [/^Completa: /, 'Complete: '], [/^¿Cómo se dice «(.+)»\?$/, 'How do you say «$1»?'], [/^¿Qué significa «(.+)»\?$/, 'What does «$1» mean?'],
   [/^¿Cuál es el plural de «(.+)»\?$/, 'What is the plural of «$1»?'], [/^¿Cuál es el pasado de «(.+)»\?$/, 'What is the past of «$1»?'],
   [/^¿Cuál frase está bien ordenada\?$/, 'Which sentence is correct?'], [/^¿Qué número sigue\? /, 'What number is next? '],
-  [/^¿Cuánto es five más five\?$/, 'How much is five plus five?'], [/^¿Qué letra se llama «ei» en inglés\?$/, 'Which letter sounds like «ei»?'], [/^¿Cuál es lo contrario de «(.+)»\?$/, 'What is the opposite of «$1»?'] ];
+  [/^¿Cuánto es five más five\?$/, 'How much is five plus five?'], [/^¿Qué letra se llama «ei» en inglés\?$/, 'Which letter sounds like «ei»?'], [/^¿Cuál es lo contrario de «(.+)»\?$/, 'What is the opposite of «$1»?'], [/^¿Cuál es la forma formal de «(.+)»\?$/, 'What is the formal word for «$1»?'] ];
 const enq = (q) => PREGUNTAS_EN.reduce((s, par) => s.replace(par[0], par[1]), q);
 
 /* ---------- Inicio: una sola unidad a la vista, sin scroll ---------- */
@@ -1161,7 +1301,7 @@ function inicio() {
   const racha = (est.ultimo === dia(0) || est.ultimo === dia(1)) ? est.racha : 0;
   let pista = 'Finish this unit to unlock the next one.';
   if (completa && abierta(prox)) pista = prox.nivel !== u.nivel ? `Level ${u.nivel} complete. You unlocked level ${prox.nivel}.` : 'Unit complete. Tap the arrow to continue.';
-  else if (completa) pista = 'You finished everything. More units are coming soon.';
+  else if (completa) pista = 'You finished the whole course. Keep talking with Osito!';
   app.innerHTML = `
     <header class="cabecera">
       <img src="${CARA}" alt="">
@@ -1480,7 +1620,9 @@ const GRAMATICA = [
   'future with will and going to', 'passive voice in present and past simple', 'zero, first and second conditionals',
   'modal verbs in context: deduction, advice, obligation', 'common phrasal verbs', 'reported speech',
   'perfect tenses: present perfect, past perfect, future perfect, and their continuous forms', 'third and mixed conditionals; wish and if only',
-  'advanced passive: with modals, have something done', 'idiomatic expressions and wider vocabulary', 'complex connectors: despite, whereas, therefore, nevertheless' ];
+  'advanced passive: with modals, have something done', 'idiomatic expressions and wider vocabulary', 'complex connectors: despite, whereas, therefore, nevertheless',
+  'advanced structures: inversion, cleft sentences, emphasis', 'idioms and natural collocations', 'style, register and coherence',
+  'fine differences between tenses', 'advanced connectors and text cohesion' ];
 
 /* ---------- Conversación con Osito (el servidor habla con Gemini; la clave nunca llega aquí) ---------- */
 const TEMAS = [
