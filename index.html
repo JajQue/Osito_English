@@ -212,6 +212,8 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--tinta); out
 .rejilla .parada.hecha .bola { box-shadow: 0 6px 0 var(--oro-osc); }
 .rejilla .parada.cerrada .bola { box-shadow: 0 6px 0 var(--gris-osc); }
 .rejilla .parada .nombre { font-size: .9rem; }
+.fila-enlaces { display: flex; justify-content: center; gap: 16px; }
+.inicio .fila-enlaces .enlace { margin: 0; }
 .pista { margin: 0; text-align: center; color: var(--tinta-suave); font-weight: 700; font-size: .9rem; }
 .inicio .enlace { margin: 0 auto; padding: 2px 8px; font-size: .82rem; }
 @media (max-height: 640px) { .inicio .saludo img { display: none; } .inicio .saludo { padding: 8px 14px; } }
@@ -220,9 +222,6 @@ button:focus-visible, input:focus-visible { outline: 3px solid var(--tinta); out
 .msj small[hidden] { display: none; }
 .enlace.ver-trad { margin: 4px 0 0; padding: 0; font-size: .8rem; display: block; }
 .enlace[hidden] { display: none; }
-
-.fila-enlaces { display: flex; justify-content: center; gap: 18px; }
-.inicio .fila-enlaces .enlace { margin: 0; }
 
 /* Conversación con Osito */
 .titulo-chat { flex: 1; font-family: var(--titulo); font-size: 1.2rem; margin: 0; }
@@ -1149,6 +1148,7 @@ const pendiente = () => { const i = LECCIONES.findIndex((l) => !est.hechas[l.id]
 const abierta = (u) => !!u && !!u.lecciones && LECCIONES.indexOf(u.lecciones[0]) <= pendiente();
 
 function inicio() {
+  if (!est.diagVisto && !est.xp && !Object.keys(est.hechas).length) return bienvenida();
   ses = null; vista = 'inicio';
   const n = palabrasAprendidas(), sig = pendiente();
   if (verU === null) {
@@ -1193,18 +1193,90 @@ function inicio() {
         }).join('')}
       </div>
       <p class="pista">${pista}</p>
-      <div class="fila-enlaces"><button class="enlace" id="borrar">Reset my progress</button><button class="enlace" id="cerrar-sesion">Sign out</button></div>
+      <div class="fila-enlaces"><button class="enlace" id="borrar">Reset my progress</button><button class="enlace" id="prueba">Level test</button><button class="enlace" id="cerrar-sesion">Sign out</button></div>
     </main>`;
   app.querySelectorAll('.parada:not(.cerrada)').forEach((b) => b.onclick = () => empezar(+b.dataset.i));
   app.querySelector('#hablar').onclick = hablar;
   app.querySelector('#antes').onclick = () => { verU--; inicio(); };
   app.querySelector('#despues').onclick = () => { verU++; inicio(); };
+  app.querySelector('#prueba').onclick = empezarDiag;
   app.querySelector('#cerrar-sesion').onclick = () => { subir(); sb.auth.signOut(); };
   const borrar = app.querySelector('#borrar');
   borrar.onclick = () => {
     if (borrar.dataset.seguro) { est = VACIO(); guardar(); verU = null; inicio(); }
     else { borrar.dataset.seguro = '1'; borrar.textContent = 'Tap again to erase everything'; }
   };
+}
+
+/* ---------- Prueba de nivel ----------
+   Dos preguntas por unidad, en orden: una de gramática y una de armar la frase.
+   Se detiene al fallar las dos de una unidad o al sumar tres fallos. La persona empieza
+   en la primera unidad donde falló; las anteriores quedan abiertas para repasar. */
+const CON_LECCIONES = () => UNIDADES.filter((u) => u.lecciones);
+
+function bienvenida() {
+  ses = null; vista = 'bienvenida';
+  app.innerHTML = `<main class="cuerpo final">
+      <img src="${OSO}" alt="Osito saluda con los brazos abiertos" style="animation:flotar 3s ease-in-out infinite">
+      <h2>Welcome!</h2>
+      <p>Do you already know some English?</p>
+      <button class="enlace ayuda" id="ayuda" style="margin:0 auto 10px">Help in Spanish</button>
+      <p id="explica" hidden>Si ya sabes algo de inglés, haz la prueba de nivel: son unos minutos y empiezas donde te corresponde. Si empiezas desde cero, elige la segunda opción.</p>
+    </main>
+    <footer class="pie">
+      <button class="boton" id="con-prueba">Find my level</button>
+      <button class="boton claro" id="desde-cero" style="margin-top:12px">I am new to English</button>
+    </footer>`;
+  const ayuda = app.querySelector('#ayuda');
+  ayuda.onclick = () => { app.querySelector('#explica').hidden = false; ayuda.hidden = true; };
+  app.querySelector('#con-prueba').onclick = empezarDiag;
+  app.querySelector('#desde-cero').onclick = () => { est.diagVisto = true; guardar(); inicio(); };
+}
+
+function preguntasDe(u) {
+  const nuevas = u.lecciones.filter((l) => l.voc);
+  if (!nuevas.length) {
+    const pasos = u.lecciones.flatMap((l) => l.pasos || []);
+    return [mezclar(pasos.filter((p) => p.t === 'elige'))[0], mezclar(pasos.filter((p) => p.t === 'ordena'))[0]].filter(Boolean);
+  }
+  const c = mezclar(mezclar(nuevas)[0].comp)[0], l = mezclar(nuevas)[0], f = mezclar(l.fr)[0];
+  const mias = f[1].toLowerCase().split(' ');
+  const resto = [...new Set(l.fr.filter((x) => x !== f).flatMap((x) => x[1].split(' ')))].filter((w) => !mias.includes(w.toLowerCase()));
+  return [{ t: 'elige', q: c[0], ops: [c[1], ...c[2]], ok: c[1] }, { t: 'ordena', es: f[0], en: f[1], extra: mezclar(resto).slice(0, 3) }];
+}
+
+function empezarDiag() {
+  const cola = CON_LECCIONES().flatMap((u, i) => preguntasDe(u).map((p) => Object.assign({}, p, { u: i })));
+  ses = { diag: true, l: { nombre: 'Level test', palabras: [] }, cola, total: cola.length, hechos: 0, vidas: 5, fallos: 0, primeras: 0, tips: 0, res: {}, resp: null, estado: 'pensando' };
+  vista = 'leccion';
+  paso();
+}
+
+function avanzarDiag(ok) {
+  const s = ses, p = s.cola.shift(), r = s.res[p.u] = s.res[p.u] || { ok: 0, mal: 0 };
+  s.hechos++;
+  if (ok) r.ok++; else { r.mal++; s.fallos++; }
+  if (r.mal >= 2 || s.fallos >= 3) return finDiag();
+  paso();
+}
+
+function finDiag() {
+  const s = ses, us = CON_LECCIONES();
+  let destino = us.findIndex((u, i) => s.res[i] && s.res[i].mal > 0);
+  if (destino < 0) destino = s.cola.length ? s.cola[0].u : us.length - 1;
+  us.slice(0, destino).forEach((u) => u.lecciones.forEach((l) => { est.hechas[l.id] = true; }));
+  est.diagVisto = true; guardar();
+  ses = null; verU = null; vista = 'resultado';
+  const u = us[destino];
+  app.innerHTML = `<main class="cuerpo final">
+      <img src="${OSO}" alt="Osito celebra">
+      <h2>Your level: ${u.nivel}</h2>
+      <p>You start at Unit ${u.num}: ${esc(tr(u.n))}.</p>
+      <p>${destino ? 'The units before it are open. Use the arrow to go back and review.' : 'We start from the beginning, step by step.'}</p>
+    </main>
+    <footer class="pie"><button class="boton" id="listo">Start</button></footer>`;
+  app.querySelector('#listo').onclick = inicio;
+  app.querySelector('#listo').focus();
 }
 
 /* ---------- Lección ---------- */
@@ -1224,7 +1296,7 @@ function empezar(i) {
 
 function paso() {
   const s = ses, p = s.cola[0];
-  if (!p) return final();
+  if (!p) return s.diag ? finDiag() : final();
   s.resp = null; s.estado = 'pensando';
   let centro = '';
   if (p.t === 'tip') {
@@ -1260,13 +1332,13 @@ function paso() {
     <div class="tope">
       <button class="cerrar" id="salir" aria-label="Salir de la lección">${I.x}</button>
       <div class="barra"><i style="width:${Math.max(4, s.hechos / s.total * 100)}%"></i></div>
-      <span class="dato vidas">${I.corazon}${s.vidas}</span>
+      ${s.diag ? '' : `<span class="dato vidas">${I.corazon}${s.vidas}</span>`}
     </div>
-    <main class="cuerpo">${centro}</main>
+    <main class="cuerpo">${s.diag ? '<span class="etiqueta">Level test</span>' : ''}${centro}</main>
     <footer class="pie" id="pie"><button class="boton ${p.t === 'tip' ? '' : 'verde'}" id="accion" ${p.t === 'tip' ? '' : 'disabled'}>${p.t === 'tip' ? 'Got it' : 'Check'}</button></footer>`;
 
   const accion = app.querySelector('#accion');
-  app.querySelector('#salir').onclick = inicio;
+  app.querySelector('#salir').onclick = s.diag ? finDiag : inicio;
   app.querySelectorAll('[data-say]').forEach((b) => b.onclick = () => decir(b.dataset.say));
   const ayuda = app.querySelector('#ayuda');
   if (ayuda) ayuda.onclick = () => { app.querySelector('#explica').hidden = false; ayuda.hidden = true; };
@@ -1332,10 +1404,10 @@ function veredicto(ok, buena, sinCastigo) {
   const pie = app.querySelector('#pie');
   pie.hidden = false;
   const fallo = !ok && !sinCastigo;
-  if (fallo) s.vidas--;
+  if (fallo && !s.diag) s.vidas--;
   pie.className = 'pie ' + (fallo ? 'mal' : 'bien');
   const frases = ['Great job!', 'Correct!', 'Well done!', 'Nice!'];
-  pie.innerHTML = `<p class="veredicto">${fallo ? 'Almost. We will review it at the end.' : frases[s.hechos % frases.length]}</p>
+  pie.innerHTML = `<p class="veredicto">${fallo ? (s.diag ? 'Not yet.' : 'Almost. We will review it at the end.') : frases[s.hechos % frases.length]}</p>
     ${fallo && buena ? `<p class="correcta">Correct answer: ${esc(buena)}</p>` : ''}
     <button class="boton ${fallo ? 'peligro' : 'verde'}" id="seguir">Continue</button>`;
   const oso = app.querySelector('.escena img');
@@ -1347,6 +1419,7 @@ function veredicto(ok, buena, sinCastigo) {
 }
 
 function avanzar(ok, esTip) {
+  if (ses.diag) return avanzarDiag(ok);
   const s = ses, p = s.cola.shift();
   if (ok) { s.hechos++; if (!esTip && !p.repetido) s.primeras++; }
   else { s.fallos++; p.repetido = true; s.cola.push(p); }
@@ -1630,6 +1703,7 @@ async function entrar(sesion) {
   est = VACIO();
   // Si hay progreso en este teléfono y en la nube, se queda con el más avanzado y junta las lecciones hechas.
   const fuentes = [local, nube].filter((x) => x && typeof x === 'object');
+  est.diagVisto = fuentes.some((f) => f.diagVisto);
   for (const f of fuentes) {
     Object.assign(est.hechas, f.hechas || {});
     if ((f.xp || 0) >= est.xp) { est.xp = f.xp || 0; est.racha = f.racha || 0; est.ultimo = f.ultimo || ''; }

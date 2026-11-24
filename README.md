@@ -16,6 +16,7 @@ App para aprender inglés desde el español, estilo juego, con Osito como mascot
 ## Cómo funciona
 
 - **Entrada:** con Google. Solo entran los correos de la tabla `permitidos` (tope de 5).
+- **Prueba de nivel:** la primera vez, la persona elige entre empezar de cero o hacer la prueba. La prueba hace dos preguntas por unidad (una de gramática y una de armar la frase), se detiene al fallar las dos de una unidad o al sumar tres fallos, y ubica a la persona en la primera unidad donde falló. Las unidades anteriores quedan abiertas para repasar. Se puede repetir desde el inicio con "Level test".
 - **Progreso:** se guarda en el teléfono y en la nube (tabla `progreso`); cada persona ve solo lo suyo.
 - **Conversación:** la app llama a la función `osito`, y esta habla con Gemini. La clave de Gemini vive solo en los secretos de Supabase (`GEMINI_API_KEY`), nunca en este repositorio.
 - **Voz:** la app graba la voz de la persona y se la envía a Gemini, que escucha el audio real, corrige palabras y pronunciación, y responde con su propia voz. Si la voz de Gemini no está disponible, se usa la del teléfono.
