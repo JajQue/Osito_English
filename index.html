@@ -1212,7 +1212,7 @@ const CURSO = [
     { n: 'Advanced connectors', lecciones: [...COHESION, R('repaso-cohesion', COHESION)] } ] }
 ];
 const LECCIONES = CURSO.flatMap((n) => n.unidades.flatMap((u) => u.lecciones || []));
-META = LECCIONES.reduce((n, l) => n + l.palabras.length, 0);
+META = LECCIONES.reduce((n, l) => n + l.palabras.length, 0) + 3420; // lecciones + palabras del mazo que no están en las lecciones
 const UNIDADES = CURSO.flatMap((n) => n.unidades.map((u, k) => Object.assign({ nivel: n.nivel, nivelNombre: n.nombre, num: k + 1, de: n.unidades.length }, u)));
 
 /* ---------- Estado guardado en este navegador ---------- */
@@ -1234,7 +1234,15 @@ const guardar = () => {
   clearTimeout(pendienteNube); pendienteNube = setTimeout(subir, 800);
 };
 const dia = (d) => { const f = new Date(Date.now() - d * 864e5); return f.getFullYear() + '-' + (f.getMonth() + 1) + '-' + f.getDate(); };
-const palabrasAprendidas = () => LECCIONES.reduce((n, l) => n + (est.hechas[l.id] ? l.palabras.length : 0), 0);
+/* Palabras que la persona ya sabe, sin contar dos veces las que están en una lección y en el mazo. */
+const LX = {"saludos":[4,[1668,1789,1698,368]],"yo-y-tu":[5,[9,17,15,379,153,461,483]],"mi-dia":[3,[190,35,44,40,29,8,250]],"repaso":[0,[]],"abecedario":[0,[509,232,229,245,63,904]],"sonidos-nuevos":[1,[2260,25,759,805,657,878]],"numeros":[2,[2482,205,273,500,580,768,313]],"colores":[1,[425,341,794,258,173,3062,618,166]],"repaso-sonidos":[0,[]],"orden":[1,[151,3723,704,183,147,548,745]],"decir-no":[0,[18,12,141,1201,1847,1234,2327,1363]],"mas-acciones":[2,[21,28,27,39,419,24,1811]],"unir-ideas":[2,[4,97,14,101,109,52,74]],"repaso-frases":[0,[]],"a-an":[1,[423,2475,201,281,123,429,1524,155]],"the":[0,[0,7,152,865,325,130,51,3037,6]],"plural":[1,[218,217,45,47,49,42,724,174]],"cerca-lejos":[2,[184,102,46,930,568,308,53]],"repaso-articulos":[0,[]],"como-es":[1,[66,61,70,518,252,452,56,376]],"como-estas":[1,[1825,2098,288,2080,404,297,1863,164]],"como-lo-haces":[0,[268,282,182,121,187,219,69,139,213]],"mucho-poco":[2,[117,94,104,112,60,75,1723]],"repaso-describir":[0,[]],"it-we-they":[2,[10,226,194,193,449,737,1016]],"de-quien":[6,[1752,539,579]],"me-him-us":[4,[125,36,34,33,305]],"alguien-nadie":[2,[587,851,1826,198,334,852,640]],"repaso-pronombres":[0,[]],"la-s":[6,[454,874,344]],"rutina":[1,[3145,582,502,177,275,144,2011,2395]],"doesnt":[1,[487,357,261,496,31,170,143,283]],"ahora-mismo":[9,[]],"repaso-presente":[0,[]],"preguntas-be":[2,[93,2777,230,62,781,2811,77]],"preguntas-do":[8,[2643]],"respuestas":[2,[83,3,11,2,19,79,111]],"conocer":[2,[1446,41,553,2047,191,364,311]],"repaso-preguntas":[0,[]],"was-were":[3,[2896,55,346,474,641,765]],"pasado-ed":[9,[]],"irregulares":[7,[128,176]],"did":[1,[241,32,856,793,552,360,225,37]],"repaso-pasado":[0,[]],"can-could":[3,[85,659,385,140,291,3831]],"must":[1,[88,380,158,2341,619,119,2311,1487]],"should":[1,[87,642,335,2766,1865,422,3057,234]],"permiso":[3,[135,86,215,1509,792,679]],"repaso-modales":[0,[]],"lugar":[3,[13,118,350,96,338,503]],"tiempo":[3,[3008,1545,257,1878,757,2555]],"movimiento":[2,[80,92,249,91,272,2939,99]],"antes-despues":[0,[95,82,251,189,116,221,209,1142,2810]],"repaso-lugar-tiempo":[0,[]],"mas-que":[6,[1896,2849,2974]],"more-than":[0,[847,242,71,2329,881,3076,978,345,558]],"el-mas":[1,[254,2999,253,2930,108,2060,50,333]],"igual-que":[1,[16,65,741,211,214,535,185,390]],"repaso-comparar":[0,[]],"en-orden":[0,[105,103,98,54,68,854,178,2988,127]],"if":[3,[3089,421,469,910,340,264]],"aunque":[1,[2168,122,255,864,89,363,596,207]],"opinion":[2,[412,1603,277,1779,445,361,438]],"repaso-conectores":[0,[]],"will":[3,[84,645,3411,490,1823,398]],"going-to":[2,[289,584,1782,2252,3488,435,2925]],"fechas-futuras":[2,[1689,491,441,1393,725,2672,1922]],"predicciones":[0,[1074,585,1920,772,505,2901,246,203,755]],"repaso-futuro":[0,[]],"is-made":[4,[394,443,168,180,2169]],"was-built":[6,[1601,2207,331]],"by":[0,[78,465,498,1431,586,559,764,1862,304]],"noticias":[8,[2051]],"repaso-pasiva":[0,[]],"siempre-verdad":[0,[374,1713,2903,1622,613,142,581,2663,196]],"si-puede-pasar":[0,[210,2344,820,276,2828,1750,2703,424,687]],"imaginar":[1,[652,564,2091,343,756,843,466,299]],"a-menos-que":[3,[3275,479,661,1724,3439,508]],"repaso-condicionales":[0,[]],"deducir":[1,[298,1454,171,1238,1522,2159,1284,1215]],"tuve-que":[3,[2910,2314,3400,513,2293,489]],"sugerir":[3,[601,1795,804,1141,1876,726]],"ser-capaz":[1,[76,869,2874,723,634,861,857,1877]],"repaso-modales-b":[0,[]],"phrasal-casa":[2,[3209,3206,3205,3181,3198,3191,3177]],"phrasal-movimiento":[5,[3118,3152,3141,3184]],"phrasal-personas":[2,[3166,3165,3137,3149,3151,3138,3155]],"phrasal-trabajo":[0,[3135,3214,3109,3180,3213,3186,3124,3187,3112]],"repaso-phrasal":[0,[]],"say-tell":[1,[20,239,1912,1686,1646,527,2842,1098]],"preguntas-contadas":[0,[583,703,485,783,595,1195,974,2099,946]],"ordenes-contadas":[1,[244,3431,3021,1794,693,889,2966,729]],"tiempo-contado":[6,[1184,1203,3082]],"repaso-indirecto":[0,[]],"have-done":[3,[237,107,371,159,2389,743]],"for-since":[4,[2589,1219,259,2277,541]],"had-done":[6,[1965,290,3040]],"will-have":[6,[655,1411,1303]],"repaso-perfectos":[0,[]],"habria":[5,[2895,1531,1376,2032]],"ojala":[3,[426,977,1850,2217,1977,3004]],"mezclados":[4,[2773,1297,2491,876,1895]],"formales":[5,[784,1290,2122,1882]],"repaso-condicionales-b2":[0,[]],"pasiva-modales":[3,[2228,1483,235,1706,1020,2251]],"mandar-a-hacer":[1,[2513,3893,3453,2426,3300,2065,1099,377]],"se-dice":[6,[1304,323,790]],"get-pasiva":[7,[2384,3084]],"repaso-pasiva-b2":[0,[]],"modismos-diarios":[8,[3248]],"sentimientos":[2,[2772,905,2307,983,2501,1108,1818]],"van-juntas":[9,[]],"formar-palabras":[3,[1682,1950,2480,2044,2771,1257]],"repaso-modismos":[0,[]],"contraste":[2,[3081,3268,3091,3086,3274,3264,3090]],"causa-resultado":[4,[3088,3257,3259,644,3083]],"sumar-ordenar":[4,[3261,3085,3262,3258,3263]],"proposito":[7,[3266,3265]],"repaso-conectores-b2":[0,[]],"inversion":[5,[2872,1592,58,929]],"resaltar":[6,[975,169,1913]],"enfasis":[5,[1827,862,3060,2118]],"acortar":[7,[224,3278]],"repaso-estructuras":[0,[]],"modismos-trabajo":[7,[3222,3223]],"modismos-gente":[8,[3239]],"modismos-tiempo":[8,[3219]],"frases-naturales":[9,[]],"repaso-expresiones":[0,[]],"formal":[5,[1281,2027,2001,1790]],"suavizar":[8,[1599]],"no-repetir":[6,[3269,3280,3270]],"escribir":[2,[475,2336,2042,899,3023,1103,599]],"repaso-estilo":[0,[]],"solia":[6,[3000,1951,3365]],"pasado-o-perfecto":[9,[]],"iba-a":[7,[2744,1830]],"estados":[0,[2852,59,327,3006,1380,1591,922,1708,395]],"repaso-matices":[0,[]],"conceder":[6,[3255,3271,3254]],"limites":[9,[]],"resumir":[7,[3283,3087]],"opinar":[7,[1793,1379]],"repaso-cohesion":[0,[]]};
+const palabrasAprendidas = () => {
+  let solo = 0; const mazo = new Set();
+  for (const l of LECCIONES) if (est.hechas[l.id] && LX[l.id]) { solo += LX[l.id][0]; for (const id of LX[l.id][1]) mazo.add(id); }
+  const c = (est.w && est.w.c) || {};
+  for (const k in c) if (c[k][1] > 0) mazo.add(+k);
+  return solo + mazo.size;
+};
 
 /* IA: hay sesión y se puede conversar. DICT: micrófono del navegador, si existe. */
 let IA = null, DICT = null, vista = 'entrar', oyendo = false;
@@ -1317,7 +1325,7 @@ function inicio() {
           <div class="meta"><div class="barra"><i style="width:${Math.max(1.5, n / META * 100)}%"></i></div><small>${n} of ${META} words</small></div>
         </div>
       </section>
-      <button class="boton rosa" id="hablar">${I.chat} Talk with Osito</button>
+      <div class="dos-botones"><button class="boton rosa" id="hablar">${I.chat} Talk</button><button class="boton" id="palabras">Words${wPendientes() ? ` <span class="insignia">${wPendientes()}</span>` : ''}</button></div>
       <div class="pager">
         <button class="flecha" id="antes" aria-label="Unidad anterior" ${verU === 0 ? 'disabled' : ''}>${I.izq}</button>
         <div class="unidad"><b>Level ${u.nivel} · Unit ${u.num}</b><span>${tr(u.n)}</span></div>
@@ -1337,6 +1345,7 @@ function inicio() {
     </main>`;
   app.querySelectorAll('.parada:not(.cerrada)').forEach((b) => b.onclick = () => empezar(+b.dataset.i));
   app.querySelector('#hablar').onclick = hablar;
+  app.querySelector('#palabras').onclick = () => palabras();
   app.querySelector('#antes').onclick = () => { verU--; inicio(); };
   app.querySelector('#despues').onclick = () => { verU++; inicio(); };
   app.querySelector('#prueba').onclick = empezarDiag;
@@ -1846,6 +1855,7 @@ async function entrar(sesion) {
   // Si hay progreso en este teléfono y en la nube, se queda con el más avanzado y junta las lecciones hechas.
   const fuentes = [local, nube].filter((x) => x && typeof x === 'object');
   est.diagVisto = fuentes.some((f) => f.diagVisto);
+  est.w = fuentes.map((f) => f.w).filter((x) => x && typeof x === 'object').sort((a, b) => Object.keys(b.c || {}).length - Object.keys(a.c || {}).length)[0];
   for (const f of fuentes) {
     Object.assign(est.hechas, f.hechas || {});
     if ((f.xp || 0) >= est.xp) { est.xp = f.xp || 0; est.racha = f.racha || 0; est.ultimo = f.ultimo || ''; }
@@ -1870,5 +1880,6 @@ async function arrancar() {
 }
 arrancar();
 </script>
+<script src="words.js"></script>
 </body>
 </html>
