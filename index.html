@@ -715,6 +715,305 @@ const CONECTORES = [
     [['Completa: I ___ with you','agree',['true','reason']],['Completa: I think that is ___','true',['agree','explain']]])
 ];
 
+/* ===== Nivel B1 ===== */
+const FUTURO = [
+  G('will', 'Will',
+    [['Will','Verbo de futuro'],["Won't",'No (en futuro)'],['Future','Futuro'],['Promise','Promesa'],['Hope','Esperar (desear)'],['Expect','Esperar (suponer)'],['Decide','Decidir'],['Perhaps','Quizás'],['Someday','Algún día']],
+    ['Will', "Will sirve para decisiones del momento, promesas y predicciones. Va antes del verbo simple y es igual para todas las personas. La forma negativa es won't.",
+      [['I will help you','Te ayudaré'],["She won't come",'Ella no vendrá'],['It will rain','Lloverá'],['Will you call me?','¿Me llamarás?']]],
+    [['Yo te ayudaré mañana','I will help you tomorrow'],['Ella no vendrá hoy',"She won't come today"],['Espero que te guste','I hope you will like it'],['Quizás llueva más tarde','Perhaps it will rain later'],['Te prometo que llamaré','I promise I will call']],
+    [['Completa: I ___ call you tonight','will',['am','did']],['Completa: She ___ be late, I promise',"won't",["don't","isn't"]]]),
+  G('going-to', 'Going to',
+    [['Going to','Ir a (un plan)'],['Plan','Plan'],['Trip','Viaje'],['Travel','Viajar'],['Visit','Visitar'],['Ticket','Boleto'],['Hotel','Hotel'],['Summer','Verano'],['Vacation','Vacaciones']],
+    ['Going to', 'Going to es para planes ya decididos y para lo que se ve venir. Se arma con am, is o are + going to + verbo simple.',
+      [['I am going to travel','Voy a viajar'],['She is going to study','Ella va a estudiar'],['We are going to buy a car','Vamos a comprar un carro'],['It is going to rain','Va a llover']]],
+    [['Yo voy a viajar en verano','I am going to travel in summer'],['Nosotros vamos a visitar a mi madre','We are going to visit my mother'],['Ella va a comprar los boletos','She is going to buy the tickets'],['¿Vas a quedarte en un hotel?','Are you going to stay in a hotel'],['Ellos tienen un plan para las vacaciones','They have a plan for the vacation']],
+    [['Completa: I am ___ to study tonight','going',['go','will']],['Completa: They ___ going to travel','are',['is','will']]]),
+  G('fechas-futuras', 'Dates and seasons',
+    [['Tonight','Esta noche'],['Spring','Primavera'],['Winter','Invierno'],['Autumn','Otoño'],['Season','Estación del año'],['January','Enero'],['December','Diciembre'],['Birthday','Cumpleaños'],['Holiday','Día festivo']],
+    ['Dates and seasons', 'Para planes con fecha ya fija también se usa el presente continuo: I am meeting Ana tonight. Con meses y estaciones va in; con días, on.',
+      [['I am working tonight','Trabajo esta noche'],['My birthday is in January','Mi cumpleaños es en enero'],['We travel in winter','Viajamos en invierno'],['See you on the holiday','Nos vemos el día festivo']]],
+    [['Mi cumpleaños es en diciembre','My birthday is in December'],['Yo voy a trabajar esta noche','I am going to work tonight'],['En invierno hace frío','It is cold in winter'],['La primavera es mi estación favorita','Spring is my favorite season'],['Nosotros vamos a viajar en enero','We are going to travel in January']],
+    [['Completa: My birthday is ___ December','in',['on','at']],['Completa: We ___ meeting Ana tonight','are',['will','going']]]),
+  G('predicciones', 'Predictions',
+    [['Definitely','Definitivamente'],['Possible','Posible'],['Impossible','Imposible'],['Chance','Oportunidad'],['Result','Resultado'],['Change','Cambiar'],['Become','Convertirse en'],['Grow','Crecer'],['Win','Ganar']],
+    ['Predictions', 'Para predecir usa will con I think o I am sure. Si hay una señal clara ahora mismo, usa going to: Look at the sky, it is going to rain.',
+      [['I think we will win','Creo que ganaremos'],['Things will change','Las cosas cambiarán'],['It is possible','Es posible'],['She will become a doctor','Ella será doctora']]],
+    [['Yo creo que nosotros ganaremos','I think we will win'],['La ciudad va a crecer','The city is going to grow'],['Todo cambiará pronto','Everything will change soon'],['Ella definitivamente vendrá','She will definitely come'],['Es imposible terminar hoy','It is impossible to finish today']],
+    [['Completa: I think it ___ be a good day','will',['is','going']],['Completa: Nothing is ___','impossible',['become','chance']]])
+];
+
+const PASIVA = [
+  G('is-made', 'Is made',
+    [['Made of','Hecho de'],['Built','Construido'],['Written','Escrito'],['Sold','Vendido'],['Spoken','Hablado'],['Used for','Usado para'],['Wood','Madera'],['Paper','Papel'],['Factory','Fábrica']],
+    ['Is made', 'En la voz pasiva importa lo que se hace, no quién lo hace. Se arma con am, is o are + el participio: English is spoken here.',
+      [['English is spoken here','Aquí se habla inglés'],['This table is made of wood','Esta mesa está hecha de madera'],['Books are sold here','Aquí se venden libros'],['Cars are made in a factory','Los carros se hacen en una fábrica']]],
+    [['Esta mesa está hecha de madera','This table is made of wood'],['Aquí se habla inglés','English is spoken here'],['Los carros se hacen en una fábrica','Cars are made in a factory'],['El libro está escrito en inglés','The book is written in English'],['Esta caja se usa para el papel','This box is used for paper']],
+    [['Completa: English ___ spoken here','is',['are','does']],['Completa: These shoes are ___ in a factory','made',['make','making']]]),
+  G('was-built', 'Was built',
+    [['Painted','Pintado'],['Invented','Inventado'],['Discovered','Descubierto'],['Taken','Tomado'],['Given','Dado'],['Broken','Roto'],['Stolen','Robado'],['Bridge','Puente'],['Building','Edificio']],
+    ['Was built', 'Para el pasado cambia is por was y are por were: The bridge was built last year.',
+      [['The bridge was built last year','El puente fue construido el año pasado'],['The phone was invented long ago','El teléfono fue inventado hace mucho'],['My bag was stolen','Me robaron el bolso'],['The windows were broken','Las ventanas estaban rotas']]],
+    [['El puente fue construido el año pasado','The bridge was built last year'],['Mi bolso fue robado ayer','My bag was stolen yesterday'],['La casa fue pintada en verano','The house was painted in summer'],['Las ventanas estaban rotas','The windows were broken'],['Este edificio fue construido en enero','This building was built in January']],
+    [['Completa: The phone ___ invented long ago','was',['were','did']],['Completa: The windows were ___','broken',['break','broke']]]),
+  G('by', 'Made by',
+    [['By','Por (quien lo hace)'],['Glass','Vidrio'],['Metal','Metal'],['Plastic','Plástico'],['Gold','Oro'],['Stone','Piedra'],['Cotton','Algodón'],['Leather','Cuero'],['Machine','Máquina']],
+    ['Made by', 'By presenta a quien hace la acción en una frase pasiva. Solo se pone cuando importa saberlo. Of dice de qué material está hecho algo.',
+      [['Made by hand','Hecho a mano'],['A ring made of gold','Un anillo hecho de oro'],['Written by a child','Escrito por un niño'],['It is made by a machine','Lo hace una máquina']]],
+    [['La ventana está hecha de vidrio','The window is made of glass'],['Mis zapatos están hechos de cuero','My shoes are made of leather'],['Este libro fue escrito por una mujer','This book was written by a woman'],['La caja está hecha de plástico','The box is made of plastic'],['Esto fue hecho por una máquina','This was made by a machine']],
+    [['Completa: This book was written ___ my teacher','by',['of','for']],['Completa: The ring is made ___ gold','of',['by','with']]]),
+  G('noticias', 'In the news',
+    [['News','Noticias'],['Police','Policía'],['Accident','Accidente'],['Fire','Fuego'],['Injured','Herido'],['Arrested','Arrestado'],['Rescued','Rescatado'],['Reported','Reportado'],['Damaged','Dañado']],
+    ['In the news', 'Las noticias usan mucho la pasiva porque lo importante es lo que pasó: Two people were injured.',
+      [['Two people were injured','Dos personas resultaron heridas'],['A man was arrested','Un hombre fue arrestado'],['The fire was reported at night','El fuego fue reportado en la noche'],['Nobody was injured','Nadie resultó herido']]],
+    [['Un hombre fue arrestado por la policía','A man was arrested by the police'],['Tres personas fueron rescatadas','Three people were rescued'],['El edificio fue dañado por el fuego','The building was damaged by the fire'],['El accidente fue reportado en las noticias','The accident was reported in the news'],['Nadie resultó herido','Nobody was injured']],
+    [['Completa: Two people ___ rescued','were',['was','did']],['Completa: The accident was ___ on the news','reported',['report','reporting']]])
+];
+
+const CONDICIONALES = [
+  G('siempre-verdad', 'Always true',
+    [['Heat','Calentar'],['Boil','Hervir'],['Freeze','Congelar'],['Melt','Derretir'],['Mix','Mezclar'],['Press','Presionar'],['Ice','Hielo'],['Button','Botón'],['Light','Luz']],
+    ['Always true', 'Para lo que siempre es verdad, las dos partes van en presente: If you heat ice, it melts.',
+      [['If you heat ice, it melts','Si calientas hielo, se derrite'],['If you press the button, it opens','Si presionas el botón, se abre'],['Water boils if you heat it','El agua hierve si la calientas'],['If it is very cold, water freezes','Si hace mucho frío, el agua se congela']]],
+    [['Si calientas hielo se derrite','If you heat ice it melts'],['Si presionas el botón la puerta se abre','If you press the button the door opens'],['El agua hierve si la calientas','Water boils if you heat it'],['Si mezclas rojo y blanco tienes rosado','If you mix red and white you have pink'],['Si no hay luz no veo nada','If there is no light I see nothing']],
+    [['Completa: If you heat water, it ___','boils',['boiled','boiling']],['Completa: Ice ___ if you heat it','melts',['melt','melting']]]),
+  G('si-puede-pasar', 'It can happen',
+    [['Miss','Perder (el bus)'],['Catch','Alcanzar'],['Hurry','Apurarse'],['Pass','Aprobar'],['Fail','Reprobar'],['Exam','Examen'],['Bus','Bus'],['Train','Tren'],['Station','Estación de tren']],
+    ['It can happen', 'Para algo que puede pasar: if + presente, y en la otra parte will. If you hurry, you will catch the bus.',
+      [['If you hurry, you will catch the bus','Si te apuras, alcanzarás el bus'],['If I study, I will pass','Si estudio, aprobaré'],["If it rains, we won't go",'Si llueve, no iremos'],['You will miss the train','Perderás el tren']]],
+    [['Si te apuras alcanzarás el bus','If you hurry you will catch the bus'],['Si estudio aprobaré el examen','If I study I will pass the exam'],['Si llueve no iremos al parque',"If it rains we won't go to the park"],['Si llegas tarde perderás el tren','If you are late you will miss the train'],['Te llamaré si llego a la estación','I will call you if I arrive at the station']],
+    [['Completa: If you study, you ___ pass','will',['would','are']],['Completa: If it ___, we will stay home','rains',['will rain','rained']]]),
+  G('imaginar', 'Imagine',
+    [['Rich','Rico'],['Poor','Pobre'],['Famous','Famoso'],['Lottery','Lotería'],['Island','Isla'],['Dream','Sueño'],['Imagine','Imaginar'],['Million','Millón'],['Fly','Volar']],
+    ['Imagine', 'Para imaginar algo que no es real: if + pasado, y en la otra parte would. If I were rich, I would travel. Con if se dice were para todas las personas.',
+      [['If I were rich, I would travel','Si fuera rico, viajaría'],['If I had time, I would help','Si tuviera tiempo, ayudaría'],['I would buy an island','Compraría una isla'],['What would you do?','¿Qué harías tú?']]],
+    [['Si yo fuera rico viajaría mucho','If I were rich I would travel a lot'],['Si tuviera tiempo te ayudaría','If I had time I would help you'],['Yo compraría una isla','I would buy an island'],['¿Qué harías con un millón?','What would you do with a million'],['Si pudiera volar iría a tu casa','If I could fly I would go to your house']],
+    [['Completa: If I ___ rich, I would travel','were',['am','will be']],['Completa: If I had a million, I ___ buy a house','would',['will','did']]]),
+  G('a-menos-que', 'Unless and in case',
+    [['In case','Por si acaso'],['As long as','Siempre que'],['Otherwise','De lo contrario'],['Whether','Si (o no)'],['Provided','Con tal de que'],['Condition','Condición'],['Depend','Depender'],['Risk','Riesgo'],['Safe','Seguro (sin peligro)']],
+    ['Unless and in case', 'Unless significa «a menos que». In case es «por si acaso» y as long as es «siempre que». Después de ellos va el presente, no will.',
+      [['Take an umbrella in case it rains','Lleva paraguas por si llueve'],['You can go as long as you call me','Puedes ir siempre que me llames'],["I won't go unless you come",'No iré a menos que vengas'],['It depends on the weather','Depende del clima']]],
+    [['Lleva un paraguas por si llueve','Take an umbrella in case it rains'],['Puedes ir siempre que me llames','You can go as long as you call me'],['No iré a menos que vengas',"I won't go unless you come"],['Depende del clima','It depends on the weather'],['Apúrate, de lo contrario perderás el bus','Hurry otherwise you will miss the bus']],
+    [["Completa: I won't go ___ you come",'unless',['in case','whether']],['Completa: It ___ on the weather','depends',['depend','depending']]])
+];
+
+const MODALES_B = [
+  G('deducir', 'Must be',
+    [['Certain','Seguro (de algo)'],['Guess','Adivinar'],['Seem','Parecer'],['Clue','Pista'],['Evidence','Evidencia'],['Doubt','Duda'],['Obvious','Obvio'],['Likely','Probable'],['Unlikely','Poco probable']],
+    ['Must be', "Cuando estás casi seguro de algo usa must be. Cuando crees que es imposible, can't be. Si solo es posible, might be.",
+      [['He must be tired','Debe de estar cansado'],["It can't be true",'No puede ser verdad'],['She might be at home','Puede que esté en casa'],['It seems easy','Parece fácil']]],
+    [['Él debe de estar cansado','He must be tired'],['No puede ser verdad',"It can't be true"],['Ella puede que esté en casa','She might be at home'],['Es probable que llueva','It is likely to rain'],['No tengo ninguna duda','I have no doubt']],
+    [['Completa: He worked all day. He ___ be tired','must',["can't",'would']],['Completa: That is impossible. It ___ be true',"can't",['must','should']]]),
+  G('tuve-que', 'Had to',
+    [['Had to','Tuvo que'],['Allowed','Permitido'],['Forbidden','Prohibido'],['Necessary','Necesario'],['Uniform','Uniforme'],['Permission','Permiso'],['Law','Ley'],['Duty','Deber'],['Free','Libre']],
+    ['Had to', "El pasado de must y de have to es had to. Para decir que no era necesario: didn't have to. Para permisos se usa be allowed to.",
+      [['I had to work','Tuve que trabajar'],["We didn't have to pay",'No tuvimos que pagar'],['You are allowed to enter','Tienes permitido entrar'],['It is forbidden','Está prohibido']]],
+    [['Yo tuve que trabajar ayer','I had to work yesterday'],['Nosotros no tuvimos que pagar',"We didn't have to pay"],['No está permitido entrar aquí','You are not allowed to enter here'],['Ella tuvo que usar un uniforme','She had to wear a uniform'],['Es necesario seguir la ley','It is necessary to follow the law']],
+    [['Completa: Yesterday I ___ to get up early','had',['must','have']],['Completa: You are not ___ to enter','allowed',['allow','allowing']]]),
+  G('sugerir', 'Suggestions',
+    [['Ought to','Debería (formal)'],['Had better','Más vale que'],['Suggest','Sugerir'],['Recommend','Recomendar'],['Avoid','Evitar'],['Warn','Advertir'],['Mistake','Error'],['Choice','Elección'],['Solution','Solución']],
+    ['Suggestions', "Para sugerir algo juntos usa let's + verbo. Para aconsejar con fuerza, had better. Ought to significa lo mismo que should.",
+      [["Let's go home",'Vámonos a casa'],['You had better hurry','Más vale que te apures'],['I suggest a walk','Sugiero una caminata'],['You ought to rest','Deberías descansar']]],
+    [['Más vale que te apures','You had better hurry'],['Te recomiendo este libro','I recommend this book'],['Deberías evitar ese error','You ought to avoid that mistake'],['Es una buena elección','It is a good choice'],['Tengo una solución para el problema','I have a solution for the problem']],
+    [['Completa: You had ___ hurry','better',['best','good']],['Completa: I ___ this hotel, it is very good','recommend',['avoid','warn']]]),
+  G('ser-capaz', 'Be able to',
+    [['Able','Capaz'],['Manage','Lograr'],['Succeed','Tener éxito'],['Skill','Habilidad'],['Practice','Practicar'],['Improve','Mejorar'],['Effort','Esfuerzo'],['Goal','Meta'],['Achieve','Alcanzar (una meta)']],
+    ['Be able to', 'Can no tiene futuro ni otras formas, así que se usa be able to: I will be able to help. Manage to es lograr algo difícil.',
+      [['I will be able to help','Podré ayudar'],['She managed to finish','Ella logró terminar'],['Practice every day','Practica todos los días'],['You will improve','Vas a mejorar']]],
+    [['Yo podré ayudarte mañana','I will be able to help you tomorrow'],['Ella logró pasar el examen','She managed to pass the exam'],['Tú vas a mejorar con la práctica','You will improve with practice'],['Mi meta es hablar inglés','My goal is to speak English'],['Tienes que hacer un esfuerzo','You have to make an effort']],
+    [['Completa: I will be ___ to come','able',['can','manage']],['Completa: She ___ to open the door','managed',['manage','could']]])
+];
+
+const PHRASAL = [
+  G('phrasal-casa', 'At home',
+    [['Wake up','Despertarse'],['Turn on','Encender'],['Turn off','Apagar'],['Put on','Ponerse (ropa)'],['Take off','Quitarse (ropa)'],['Sit down','Sentarse'],['Stand up','Ponerse de pie'],['Pick up','Recoger'],['Put down','Dejar sobre algo']],
+    ['At home', 'Un phrasal verb es un verbo más una palabra pequeña, y juntos cambian de significado. Turn es girar, pero turn on es encender.',
+      [['Turn on the light','Enciende la luz'],['Take off your shoes','Quítate los zapatos'],['Sit down, please','Siéntate, por favor'],['Pick up the phone','Contesta el teléfono']]],
+    [['Enciende la luz por favor','Turn on the light please'],['Yo me despierto temprano','I wake up early'],['Quítate los zapatos aquí','Take off your shoes here'],['Ella se pone un sombrero','She puts on a hat'],['Apaga el teléfono en clase','Turn off your phone in class']],
+    [['Completa: Turn ___ the light, it is dark','on',['off','up']],['Completa: I wake ___ at six','up',['on','down']]]),
+  G('phrasal-movimiento', 'Coming and going',
+    [['Come back','Regresar'],['Go out','Salir'],['Come in','Entrar'],['Get in','Subir (a un carro)'],['Get out','Bajar (de un carro)'],['Go away','Irse'],['Run away','Huir'],['Move in','Mudarse a una casa'],['Set off','Partir']],
+    ['Coming and going', 'Muchos phrasal verbs hablan de movimiento. La palabra pequeña indica la dirección: in es hacia adentro, out hacia afuera, back de regreso.',
+      [['Come in','Pasa'],['Go away','Vete'],['Come back soon','Regresa pronto'],['Get out of the car','Baja del carro']]],
+    [['Yo regreso a casa a las seis','I come back home at six'],['Nosotros salimos el viernes','We go out on Friday'],['Entra y siéntate','Come in and sit down'],['Sube al carro','Get in the car'],['Ellos partieron temprano','They set off early']],
+    [['Completa: Come ___ soon, we miss you','back',['off','on']],['Completa: Get ___ the car, we are late','in',['on','up']]]),
+  G('phrasal-personas', 'With people',
+    [['Look for','Buscar'],['Look after','Cuidar'],['Find out','Averiguar'],['Give up','Rendirse'],['Go on','Continuar'],['Hang up','Colgar'],['Call back','Devolver la llamada'],['Get along','Llevarse bien'],['Grow up','Crecer (una persona)']],
+    ['With people', 'Algunos phrasal verbs no se pueden adivinar: look for es buscar y look after es cuidar. Hay que aprenderlos como una sola palabra.',
+      [['Look for the keys','Busca las llaves'],['Look after the baby','Cuida al bebé'],['Never give up','Nunca te rindas'],['We get along well','Nos llevamos bien']]],
+    [['Yo busco mis llaves todos los días','I look for my keys every day'],['Ella cuida a su hermano','She looks after her brother'],['Nunca te rindas','Never give up'],['Te devuelvo la llamada más tarde','I will call you back later'],['Yo crecí en esta ciudad','I grew up in this city']],
+    [['Completa: I am looking ___ my phone','for',['after','up']],['Completa: Never give ___','up',['in','off']]]),
+  G('phrasal-trabajo', 'At work',
+    [['Fill in','Llenar (un formulario)'],['Write down','Anotar'],['Carry on','Seguir adelante'],['Put off','Posponer'],['Work out','Resolver'],['Run out','Quedarse sin'],['Deal with','Encargarse de'],['Set up','Montar'],['Check in','Registrarse']],
+    ['At work', 'En el trabajo y los trámites se usan mucho. Si el phrasal verb lleva un objeto corto como it, va en medio: write it down.',
+      [['Write it down','Anótalo'],['Fill in the form','Llena el formulario'],['We ran out of time','Se nos acabó el tiempo'],['Carry on','Sigue adelante']]],
+    [['Anota tu nombre aquí','Write down your name here'],['Nos quedamos sin leche','We ran out of milk'],['Yo me encargo del problema','I will deal with the problem'],['No pospongas tu trabajo',"Don't put off your work"],['Ella resolvió la respuesta','She worked out the answer']],
+    [['Completa: We ran ___ of coffee','out',['off','away']],['Completa: Write it ___, please','down',['up','in']]])
+];
+
+const INDIRECTO = [
+  G('say-tell', 'Say and tell',
+    [['Say','Decir (algo)'],['Told','Le dijo'],['Message','Mensaje'],['Secret','Secreto'],['Truth','Verdad'],['Lie','Mentira'],['Joke','Chiste'],['Word','Palabra'],['Mention','Mencionar']],
+    ['Say and tell', 'Say va con lo que se dice: She said hello. Tell necesita a quién se le dice: She told me. Al contar lo que alguien dijo, el verbo retrocede un tiempo: «I am tired» pasa a She said she was tired.',
+      [['She said she was tired','Ella dijo que estaba cansada'],['He told me the truth','Él me dijo la verdad'],['They said they were busy','Dijeron que estaban ocupados'],['Tell me a joke','Cuéntame un chiste']]],
+    [['Ella dijo que estaba cansada','She said she was tired'],['Él me dijo la verdad','He told me the truth'],['Ellos dijeron que estaban ocupados','They said they were busy'],['Ella me contó un secreto','She told me a secret'],['Él no dijo ni una palabra',"He didn't say a word"]],
+    [['Completa: He ___ me the truth','told',['said','say']],['Completa: She said she ___ tired','was',['is','be']]]),
+  G('preguntas-contadas', 'Reported questions',
+    [['Wonder','Preguntarse'],['Reply','Responder'],['Describe','Describir'],['Repeat','Repetir'],['Shout','Gritar'],['Whisper','Susurrar'],['Complain','Quejarse'],['Admit','Admitir'],['Deny','Negar']],
+    ['Reported questions', 'Al contar una pregunta, deja de ser pregunta: el orden vuelve a ser normal y no lleva do. «Where do you live?» pasa a He asked where I lived.',
+      [['He asked where I lived','Preguntó dónde vivía yo'],['She asked if I was ready','Preguntó si yo estaba listo'],['I wonder why','Me pregunto por qué'],['He replied fast','Respondió rápido']]],
+    [['Él preguntó dónde vivía yo','He asked where I lived'],['Ella preguntó si yo estaba listo','She asked if I was ready'],['Yo me pregunto por qué','I wonder why'],['Él admitió que era verdad','He admitted it was true'],['Ella se quejó del clima','She complained about the weather']],
+    [['Completa: She asked where I ___','lived',['do live','living']],['Completa: He asked ___ I was ready','if',['that','what']]]),
+  G('ordenes-contadas', 'Told me to',
+    [['Order','Ordenar'],['Request','Pedir (formal)'],['Invite','Invitar'],['Remind','Recordarle a alguien'],['Offer','Ofrecer'],['Refuse','Negarse'],['Accept','Aceptar'],['Apologize','Disculparse'],['Thank','Agradecer']],
+    ['Told me to', 'Para contar una orden o un pedido usa told o asked + persona + to + verbo: She told me to wait. En negativo: not to.',
+      [['She told me to wait','Me dijo que esperara'],['He asked me to help','Me pidió que ayudara'],['They invited us to dinner','Nos invitaron a cenar'],['She told me not to go','Me dijo que no fuera']]],
+    [['Ella me dijo que esperara','She told me to wait'],['Él me pidió que lo ayudara','He asked me to help him'],['Ellos nos invitaron a cenar','They invited us to dinner'],['Recuérdame llamar a mi madre','Remind me to call my mother'],['Ella se negó a pagar','She refused to pay']],
+    [['Completa: She told me ___ wait','to',['that','for']],['Completa: He asked me not ___ go','to',['do','did']]]),
+  G('tiempo-contado', 'The next day',
+    [['The day before','El día anterior'],['The next day','El día siguiente'],['That day','Ese día'],['At that time','En ese momento'],['Previous','Anterior'],['Following','Siguiente (formal)'],['Recently','Recientemente'],['Suddenly','De repente'],['Eventually','Con el tiempo']],
+    ['The next day', 'Al contar algo después, las palabras de tiempo también cambian: today pasa a that day, tomorrow a the next day y yesterday a the day before.',
+      [['He said he would come the next day','Dijo que vendría al día siguiente'],['She said she was busy that day','Dijo que estaba ocupada ese día'],['They arrived the day before','Llegaron el día anterior'],['Suddenly, it rained','De repente llovió']]],
+    [['Él dijo que vendría al día siguiente','He said he would come the next day'],['Ella dijo que estaba ocupada ese día','She said she was busy that day'],['Ellos llegaron el día anterior','They arrived the day before'],['De repente empezó a llover','Suddenly it started to rain'],['Yo lo vi recientemente','I saw him recently']],
+    [['Completa: He said he would call the ___ day','next',['tomorrow','after']],['Completa: She said she was busy ___ day','that',['this','today']]])
+];
+
+/* ===== Nivel B2 ===== */
+const PERFECTOS = [
+  G('have-done', 'Have done',
+    [['Have been','He estado'],['Have seen','He visto'],['Have done','He hecho'],['Ever','Alguna vez'],['Just','Acabar de'],['Yet','Todavía (en negativas)'],['Once','Una vez'],['Twice','Dos veces'],['Experience','Experiencia']],
+    ['Have done', 'El presente perfecto une el pasado con el presente: experiencias de vida o algo que acaba de pasar. Se arma con have o has + participio: I have seen that film.',
+      [['I have seen it','Lo he visto'],['Have you ever been here?','¿Has estado aquí alguna vez?'],['She has just arrived','Ella acaba de llegar'],["I haven't finished yet",'Todavía no he terminado']]],
+    [['Yo he estado aquí dos veces','I have been here twice'],['¿Has visto mi teléfono?','Have you seen my phone'],['Ella acaba de llegar','She has just arrived'],['Todavía no he terminado',"I haven't finished yet"],['Nunca he hecho esto','I have never done this']],
+    [['Completa: I ___ never been there','have',['am','did']],['Completa: She has ___ arrived','just',['yet','ever']]]),
+  G('for-since', 'For and since',
+    [['For ages','Desde hace mucho'],['Since then','Desde entonces'],['So far','Hasta ahora'],['Lately','Últimamente'],['How long','Cuánto tiempo'],['Decade','Década'],['Whole','Entero'],['Period','Periodo'],['Moment','Momento']],
+    ['For and since', 'For va con la duración: for two years. Since va con el momento en que empezó: since Monday. How long pregunta por la duración.',
+      [['I have lived here for two years','Vivo aquí desde hace dos años'],['She has worked here since January','Ella trabaja aquí desde enero'],['How long have you been here?','¿Cuánto tiempo llevas aquí?'],['So far, so good','Hasta ahora, todo bien']]],
+    [['Yo he vivido aquí por dos años','I have lived here for two years'],['Ella ha trabajado aquí desde enero','She has worked here since January'],['¿Cuánto tiempo has estado aquí?','How long have you been here'],['No lo he visto últimamente',"I haven't seen him lately"],['Hasta ahora todo está bien','So far everything is fine']],
+    [['Completa: I have lived here ___ ten years','for',['since','ago']],['Completa: She has worked here ___ Monday','since',['for','from']]]),
+  G('had-done', 'Had done',
+    [['Had been','Había estado'],['Had gone','Se había ido'],['Had left','Había salido'],['By the time','Para cuando'],['As soon as','Tan pronto como'],['Earlier','Más temprano'],['Realize','Darse cuenta'],['Notice','Notar'],['Appear','Aparecer']],
+    ['Had done', 'El pasado perfecto es el pasado del pasado: lo que ya había ocurrido antes de otra cosa. Se arma con had + participio: When I arrived, she had left.',
+      [['When I arrived, she had left','Cuando llegué, ella ya se había ido'],['I had never seen snow','Nunca había visto la nieve'],['By the time we came, it was late','Para cuando vinimos, era tarde'],['I realized it was late','Me di cuenta de que era tarde']]],
+    [['Cuando yo llegué ella se había ido','When I arrived she had gone'],['Yo nunca había visto la nieve','I had never seen snow'],['Me di cuenta de que era tarde','I realized it was late'],['Tan pronto como llegué te llamé','As soon as I arrived I called you'],['El tren había salido más temprano','The train had left earlier']],
+    [['Completa: When I arrived, they ___ left','had',['have','were']],['Completa: I had never ___ snow before','seen',['saw','see']]]),
+  G('will-have', 'Will have done',
+    [['Will have','Habré'],['Have been doing','He estado haciendo'],['By then','Para entonces'],['By next year','Para el próximo año'],['All day','Todo el día'],['Constantly','Constantemente'],['Process','Proceso'],['Progress','Progreso'],['Deadline','Fecha límite']],
+    ['Will have done', 'El futuro perfecto dice lo que ya estará terminado en un momento del futuro: I will have finished by Friday. La forma continua (have been + ing) resalta cuánto ha durado algo.',
+      [['I will have finished by Friday','Habré terminado para el viernes'],['I have been waiting all day','He estado esperando todo el día'],['She has been working since six','Ella ha estado trabajando desde las seis'],['By then, we will have arrived','Para entonces, habremos llegado']]],
+    [['Yo habré terminado para el viernes','I will have finished by Friday'],['He estado esperando todo el día','I have been waiting all day'],['Ella ha estado trabajando desde las seis','She has been working since six'],['Para entonces nosotros habremos llegado','By then we will have arrived'],['Estamos haciendo buen progreso','We are making good progress']],
+    [['Completa: I will ___ finished by Friday','have',['be','had']],['Completa: I have been ___ all day','waiting',['wait','waited']]])
+];
+
+const CONDICIONALES_B2 = [
+  G('habria', 'Would have',
+    [['Would have','Habría'],['Could have','Podría haber'],['Should have','Debería haber'],['Regret','Arrepentirse'],['Blame','Culpar'],['Fault','Culpa'],['Luck','Suerte'],['Unfortunately','Lamentablemente'],['Fortunately','Afortunadamente']],
+    ['Would have', 'Para imaginar un pasado distinto: if + had + participio, y en la otra parte would have + participio. If I had studied, I would have passed.',
+      [['If I had studied, I would have passed','Si hubiera estudiado, habría aprobado'],['I should have called','Debí haber llamado'],['You could have told me','Pudiste habérmelo dicho'],['It was my fault','Fue mi culpa']]],
+    [['Si hubiera estudiado habría aprobado','If I had studied I would have passed'],['Yo debí haber llamado','I should have called'],['Tú pudiste habérmelo dicho','You could have told me'],['Fue mi culpa','It was my fault'],['Afortunadamente nadie resultó herido','Fortunately nobody was injured']],
+    [['Completa: If I had known, I would ___ come','have',['had','be']],['Completa: You ___ have told me','should',['can','did']]]),
+  G('ojala', 'I wish',
+    [['Wish','Desear'],['If only','Ojalá'],['Pity','Lástima'],['Shame','Pena'],['Desire','Deseo'],['Envy','Envidiar'],['Lonely','Solo y triste'],['Homesick','Con nostalgia de casa'],['Grateful','Agradecido']],
+    ['I wish', 'Con wish imaginas algo distinto. Para el presente va con pasado: I wish I had more time. Para lamentar el pasado, con had + participio: I wish I had gone.',
+      [['I wish I had more time','Ojalá tuviera más tiempo'],['I wish you were here','Ojalá estuvieras aquí'],['If only I had known','Si tan solo lo hubiera sabido'],['What a pity','Qué lástima']]],
+    [['Ojalá yo tuviera más tiempo','I wish I had more time'],['Ojalá tú estuvieras aquí','I wish you were here'],['Si tan solo lo hubiera sabido','If only I had known'],['Es una lástima que no vengas','It is a pity you are not coming'],['Yo estoy agradecido por tu ayuda','I am grateful for your help']],
+    [['Completa: I wish I ___ more time','had',['have','will have']],['Completa: I wish you ___ here','were',['are','be']]]),
+  G('mezclados', 'Mixed conditionals',
+    [['Supposing','Suponiendo que'],['Even if','Incluso si'],['Only if','Solo si'],['What if','Qué tal si'],['Consequence','Consecuencia'],['Outcome','Desenlace'],['Decision','Decisión'],['Opportunity','Oportunidad (formal)'],['Circumstance','Circunstancia']],
+    ['Mixed conditionals', 'A veces la condición es del pasado y el resultado es de ahora: If I had slept more, I would not be tired now. Se mezclan las dos formas.',
+      [['If I had slept, I would not be tired','Si hubiera dormido, no estaría cansado'],['What if we are late?','¿Qué tal si llegamos tarde?'],['Even if it rains, I will go','Incluso si llueve, iré'],['Only if you want','Solo si quieres']]],
+    [['Si hubiera dormido no estaría cansado','If I had slept I would not be tired'],['¿Qué tal si llegamos tarde?','What if we are late'],['Incluso si llueve yo iré','Even if it rains I will go'],['Fue una buena decisión','It was a good decision'],['Toda decisión tiene una consecuencia','Every decision has a consequence']],
+    [['Completa: If I had slept more, I ___ not be tired now','would',['will','had']],['Completa: ___ if it rains, I will go','Even',['What','Ever']]]),
+  G('formales', 'Formal conditions',
+    [['Should you','Si usted (formal)'],['Were I','Si yo fuera (formal)'],['Had I','Si yo hubiera (formal)'],['Assistance','Asistencia'],['Require','Requerir'],['Contact','Contactar'],['Hesitate','Dudar'],['Further','Adicional'],['Inquiry','Consulta']],
+    ['Formal conditions', 'En cartas y avisos formales se quita if y se invierte el orden: Should you need help, call us. Had I known, I would have come.',
+      [['Should you need help, call us','Si necesita ayuda, llámenos'],['Had I known, I would have come','De haberlo sabido, habría venido'],['Were I you, I would wait','Yo en tu lugar esperaría'],['Do not hesitate to contact us','No dude en contactarnos']]],
+    [['Si necesita ayuda llámenos','Should you need help call us'],['De haberlo sabido habría venido','Had I known I would have come'],['Yo en tu lugar esperaría','Were I you I would wait'],['No dude en contactarnos','Do not hesitate to contact us'],['Usted requiere más asistencia','You require further assistance']],
+    [['Completa: ___ you need help, call us','Should',['Would','Did']],['Completa: ___ I known, I would have come','Had',['Have','If']]])
+];
+
+const PASIVA_B2 = [
+  G('pasiva-modales', 'Must be done',
+    [['Must be done','Debe hacerse'],['Can be seen','Puede verse'],['Should be told','Debería decirse'],['Repair','Reparar'],['Deliver','Entregar'],['Complete','Completar'],['Approve','Dar el visto bueno'],['Cancel','Cancelar'],['Replace','Reemplazar']],
+    ['Must be done', 'Después de un modal, la pasiva se arma con be + participio: It must be done today. The car can be repaired.',
+      [['It must be done today','Debe hacerse hoy'],['The car can be repaired','El carro se puede reparar'],['He should be told','Hay que decírselo'],['It will be delivered tomorrow','Se entregará mañana']]],
+    [['Esto debe hacerse hoy','This must be done today'],['El viaje fue cancelado','The trip was cancelled'],['El trabajo será entregado mañana','The work will be delivered tomorrow'],['El plan debe ser aprobado','The plan must be approved'],['El carro se puede reparar','The car can be repaired']],
+    [['Completa: It must ___ done today','be',['been','is']],['Completa: The car can be ___','repaired',['repair','repairing']]]),
+  G('mandar-a-hacer', 'Have it done',
+    [['Haircut','Corte de pelo'],['Mechanic','Mecánico'],['Dentist','Dentista'],['Service','Servicio'],['Appointment','Cita'],['Customer','Cliente'],['Fix','Arreglar'],['Install','Instalar'],['Check','Revisar']],
+    ['Have it done', 'Cuando otra persona hace algo por ti, usa have + cosa + participio: I had my car repaired. No lo hiciste tú, lo mandaste a hacer.',
+      [['I had my car repaired','Mandé a reparar mi carro'],['She has her hair cut','Ella se hace cortar el pelo'],['We had the house painted','Mandamos a pintar la casa'],['I need to have it checked','Necesito que lo revisen']]],
+    [['Yo mandé a reparar mi carro','I had my car repaired'],['Nosotros mandamos a pintar la casa','We had the house painted'],['Yo tengo una cita con el dentista','I have an appointment with the dentist'],['El mecánico arregló el carro','The mechanic fixed the car'],['Necesito que revisen mi teléfono','I need to have my phone checked']],
+    [['Completa: I had my car ___','repaired',['repair','repairing']],['Completa: She ___ her hair cut every month','has',['is','does']]]),
+  G('se-dice', 'It is said',
+    [['It is said','Se dice'],['It is believed','Se cree'],['It is known','Se sabe'],['Supposed to','Se supone que'],['Considered','Considerado'],['Rumor','Rumor'],['Fact','Hecho'],['Claim','Afirmar'],['According to','Según']],
+    ['It is said', 'Para contar lo que la gente dice sin nombrar a nadie: It is said that... También: He is said to be rich. Supposed to es lo que se espera que pase.',
+      [['It is said that he is rich','Se dice que es rico'],['She is believed to be here','Se cree que está aquí'],['You are supposed to wait','Se supone que debes esperar'],['According to the news','Según las noticias']]],
+    [['Se dice que él es rico','It is said that he is rich'],['Se supone que debes esperar','You are supposed to wait'],['Según las noticias va a llover','According to the news it is going to rain'],['Eso es un hecho','That is a fact'],['Es considerado el mejor maestro','He is considered the best teacher']],
+    [['Completa: It is ___ that he is rich','said',['say','saying']],['Completa: You are supposed ___ wait here','to',['that','for']]]),
+  G('get-pasiva', 'Being done',
+    [['Being built','Siendo construido'],['Get paid','Recibir el pago'],['Get lost','Perderse'],['Get married','Casarse'],['Get dressed','Vestirse'],['Get hurt','Lastimarse'],['Currently','Actualmente'],['Meanwhile','Mientras tanto'],['Under construction','En construcción']],
+    ['Being done', 'Para algo que se está haciendo ahora: is being + participio. En el habla diaria se usa mucho get en lugar de be: get paid, get lost, get married.',
+      [['The bridge is being built','El puente se está construyendo'],['I get paid on Friday','Me pagan el viernes'],['We got lost','Nos perdimos'],['They got married last year','Se casaron el año pasado']]],
+    [['El puente se está construyendo','The bridge is being built'],['A mí me pagan el viernes','I get paid on Friday'],['Nosotros nos perdimos en la ciudad','We got lost in the city'],['Ellos se casaron el año pasado','They got married last year'],['El edificio está en construcción','The building is under construction']],
+    [['Completa: The house is ___ painted now','being',['been','be']],['Completa: We ___ lost yesterday','got',['get','did']]])
+];
+
+const MODISMOS = [
+  G('modismos-diarios', 'Everyday idioms',
+    [['Piece of cake','Pan comido'],['Break the ice','Romper el hielo'],['Under the weather','Indispuesto'],['Once in a blue moon','Muy de vez en cuando'],['Cost a fortune','Costar una fortuna'],['On time','A tiempo'],['By heart','De memoria'],['In a hurry','Con prisa'],['Out of order','Fuera de servicio']],
+    ['Everyday idioms', 'Un modismo es una frase que no se entiende palabra por palabra. A piece of cake no habla de comida: significa que algo es muy fácil.',
+      [['It is a piece of cake','Es pan comido'],['I am under the weather','Estoy indispuesto'],['I know it by heart','Me lo sé de memoria'],['Be on time','Sé puntual']]],
+    [['El examen fue pan comido','The exam was a piece of cake'],['Yo me lo sé de memoria','I know it by heart'],['Él siempre llega a tiempo','He always arrives on time'],['Yo estoy con prisa','I am in a hurry'],['La máquina está fuera de servicio','The machine is out of order']],
+    [['Completa: The exam was a piece of ___','cake',['bread','ice']],['Completa: I know this song by ___','heart',['head','mind']]]),
+  G('sentimientos', 'Feelings',
+    [['Excited','Emocionado'],['Nervous','Nervioso'],['Worried','Preocupado'],['Proud','Orgulloso'],['Embarrassed','Avergonzado'],['Disappointed','Decepcionado'],['Relieved','Aliviado'],['Confused','Confundido'],['Surprised','Sorprendido']],
+    ['Feelings', 'Muchos sentimientos tienen dos formas: la que termina en ed es cómo te sientes tú (I am bored) y la que termina en ing es lo que lo causa (The film is boring).',
+      [['I am excited','Estoy emocionado'],['The news is exciting','La noticia es emocionante'],['She felt embarrassed','Ella se sintió avergonzada'],['I am proud of you','Estoy orgulloso de ti']]],
+    [['Yo estoy orgulloso de ti','I am proud of you'],['Ella está preocupada por el examen','She is worried about the exam'],['Yo estaba muy nervioso','I was very nervous'],['Nosotros estamos emocionados por el viaje','We are excited about the trip'],['Él estaba sorprendido por la noticia','He was surprised by the news']],
+    [['Completa: I am proud ___ you','of',['for','with']],['Completa: The film was ___, I fell asleep','boring',['bored','bore']]]),
+  G('van-juntas', 'Words that go together',
+    [['Make a decision','Tomar una decisión'],['Do homework','Hacer la tarea'],['Take a break','Tomar un descanso'],['Make a mistake','Cometer un error'],['Do a favor','Hacer un favor'],['Take care','Cuidarse'],['Make money','Ganar dinero'],['Do your best','Dar lo mejor de ti'],['Take place','Tener lugar']],
+    ['Words that go together', 'En inglés ciertas palabras siempre van juntas. Se dice make a mistake, no do a mistake. Make suele crear algo; do es cumplir una tarea.',
+      [['I made a mistake','Cometí un error'],['Do your homework','Haz tu tarea'],["Let's take a break",'Tomemos un descanso'],['Take care','Cuídate']]],
+    [['Yo cometí un error','I made a mistake'],['Tomemos un descanso',"Let's take a break"],['Tienes que tomar una decisión','You have to make a decision'],['¿Me haces un favor?','Can you do me a favor'],['Siempre da lo mejor de ti','Always do your best']],
+    [['Completa: I ___ a mistake','made',['did','took']],['Completa: ___ your homework before dinner','Do',['Make','Take']]]),
+  G('formar-palabras', 'Word building',
+    [['Useful','Útil'],['Useless','Inútil'],['Careless','Descuidado'],['Hopeful','Esperanzado'],['Unhappy','Infeliz'],['Unfair','Injusto'],['Disagree','No estar de acuerdo'],['Rewrite','Reescribir'],['Kindness','Amabilidad']],
+    ['Word building', 'Con pedacitos al inicio o al final formas palabras nuevas: un y dis dan lo contrario, ful es «lleno de», less es «sin» y ness crea un sustantivo.',
+      [['Use, useful, useless','Uso, útil, inútil'],['Happy, unhappy','Feliz, infeliz'],['Agree, disagree','De acuerdo, en desacuerdo'],['Kind, kindness','Amable, amabilidad']]],
+    [['Este libro es muy útil','This book is very useful'],['Eso es injusto','That is unfair'],['Yo no estoy de acuerdo contigo','I disagree with you'],['Gracias por tu amabilidad','Thank you for your kindness'],['Tienes que reescribir la respuesta','You have to rewrite the answer']],
+    [['¿Cuál es lo contrario de «happy»?','unhappy',['happyless','dishappy']],['Completa: This old phone is ___, it does not work','useless',['useful','hopeful']]])
+];
+
+const CONECTORES_B2 = [
+  G('contraste', 'Contrast',
+    [['Despite','A pesar de'],['In spite of','A pesar de (formal)'],['Whereas','Mientras que'],['Nevertheless','Sin embargo (formal)'],['On the other hand','Por otro lado'],['Even though','Aun cuando'],['In contrast','En contraste'],['Unlike','A diferencia de'],['Rather than','En lugar de']],
+    ['Contrast', 'Despite e in spite of van seguidos de un sustantivo o un verbo con ing, no de una frase completa: Despite the rain, we went out. Para una frase completa usa even though.',
+      [['Despite the rain, we went out','A pesar de la lluvia, salimos'],['Even though it was late, he called','Aunque era tarde, llamó'],['I like tea, whereas she likes coffee','A mí me gusta el té, mientras que a ella el café'],['On the other hand','Por otro lado']]],
+    [['A pesar de la lluvia salimos','Despite the rain we went out'],['Aunque era tarde él llamó','Even though it was late he called'],['A diferencia de mi hermano yo leo mucho','Unlike my brother I read a lot'],['Yo camino en lugar de manejar','I walk rather than drive'],['Sin embargo yo estaba feliz','Nevertheless I was happy']],
+    [['Completa: ___ the rain, we went out','Despite',['Although','Even']],['Completa: ___ though it was late, he called','Even',['Despite','Unlike']]]),
+  G('causa-resultado', 'Cause and result',
+    [['Therefore','Por lo tanto'],['As a result','Como resultado'],['Due to','Debido a'],['Because of','A causa de'],['Consequently','En consecuencia'],['Thus','Así'],['Hence','De ahí que'],['Owing to','Debido a (formal)'],['Thanks to','Gracias a']],
+    ['Cause and result', 'Due to y because of van con un sustantivo: because of the rain. Therefore y as a result empiezan una frase nueva con el resultado.',
+      [['Because of the rain, we stayed home','A causa de la lluvia, nos quedamos en casa'],['Therefore, we stayed','Por lo tanto, nos quedamos'],['Thanks to you, I passed','Gracias a ti, aprobé'],['Due to the weather','Debido al clima']]],
+    [['A causa de la lluvia nos quedamos en casa','Because of the rain we stayed at home'],['Gracias a ti yo aprobé','Thanks to you I passed'],['El viaje fue cancelado debido al clima','The trip was cancelled due to the weather'],['Por lo tanto necesitamos más tiempo','Therefore we need more time'],['Como resultado todos llegaron tarde','As a result everyone arrived late']],
+    [['Completa: ___ of the rain, we stayed home','Because',['Due','Therefore']],['Completa: Thanks ___ you, I passed','to',['of','for']]]),
+  G('sumar-ordenar', 'Adding ideas',
+    [['Furthermore','Además (formal)'],['Moreover','Es más'],['In addition','Además de eso'],['Besides','Aparte'],['As well as','Así como'],['Firstly','En primer lugar'],['Secondly','En segundo lugar'],['Lastly','Por último'],['In conclusion','En conclusión']],
+    ['Adding ideas', 'Para sumar ideas en un texto formal usa furthermore, moreover o in addition. Para ordenarlas: firstly, secondly, lastly.',
+      [['Furthermore, it is cheap','Además, es barato'],['Firstly, thank you','En primer lugar, gracias'],['He sings as well as dances','Canta y también baila'],['In conclusion, it works','En conclusión, funciona']]],
+    [['Además es más barato','Furthermore it is cheaper'],['En primer lugar gracias por venir','Firstly thank you for coming'],['Aparte yo no tengo tiempo','Besides I have no time'],['En conclusión fue una buena idea','In conclusion it was a good idea'],['Por último quiero agradecer a mi familia','Lastly I want to thank my family']],
+    [['Completa: Firstly, secondly and ___','lastly',['besides','moreover']],['Completa: In ___, it was a good idea','conclusion',['addition','well']]]),
+  G('proposito', 'Purpose and examples',
+    [['In order to','Con el fin de'],['So that','Para que'],['So as to','A fin de'],['In other words','En otras palabras'],['For instance','Por ejemplo'],['Such as','Tal como'],['That is','Es decir'],['In fact','De hecho'],['Actually','En realidad']],
+    ['Purpose and examples', 'In order to + verbo dice para qué haces algo. So that va con una frase completa. Ojo: actually no es «actualmente», significa «en realidad».',
+      [['I study in order to learn','Estudio para aprender'],['Speak slowly so that I understand','Habla despacio para que yo entienda'],['Fruit, such as apples','Fruta, tal como manzanas'],['Actually, I am not sure','En realidad, no estoy seguro']]],
+    [['Yo estudio con el fin de aprender','I study in order to learn'],['Habla despacio para que yo entienda','Speak slowly so that I understand'],['En realidad yo no estoy seguro','Actually I am not sure'],['Me gusta la fruta tal como las manzanas','I like fruit such as apples'],['De hecho es muy fácil','In fact it is very easy']],
+    [['Completa: I study in ___ to learn','order',['so','that']],['Completa: Speak slowly so ___ I understand','that',['to','as']]])
+];
+
 /* Arma los ejercicios de una lección compacta o de un repaso. */
 function armar(l) {
   let v, f, c, tip = null;
@@ -758,11 +1057,18 @@ const CURSO = [
     { n: 'Comparar', lecciones: [...COMPARAR, R('repaso-comparar', COMPARAR)] },
     { n: 'Unir ideas', lecciones: [...CONECTORES, R('repaso-conectores', CONECTORES)] } ] },
   { nivel: 'B1', nombre: 'Intermedio', unidades: [
-    { n: 'Hablar del futuro' }, { n: 'Voz pasiva: primeros pasos' }, { n: 'Condicionales' },
-    { n: 'Modales en contexto' }, { n: 'Phrasal verbs comunes' }, { n: 'Contar lo que otro dijo' } ] },
+    { n: 'The future', lecciones: [...FUTURO, R('repaso-futuro', FUTURO)] },
+    { n: 'Passive voice: first steps', lecciones: [...PASIVA, R('repaso-pasiva', PASIVA)] },
+    { n: 'Conditionals', lecciones: [...CONDICIONALES, R('repaso-condicionales', CONDICIONALES)] },
+    { n: 'Modals in context', lecciones: [...MODALES_B, R('repaso-modales-b', MODALES_B)] },
+    { n: 'Phrasal verbs', lecciones: [...PHRASAL, R('repaso-phrasal', PHRASAL)] },
+    { n: 'Reported speech', lecciones: [...INDIRECTO, R('repaso-indirecto', INDIRECTO)] } ] },
   { nivel: 'B2', nombre: 'Intermedio alto', unidades: [
-    { n: 'Tiempos perfectos' }, { n: 'Condicionales avanzados' }, { n: 'Voz pasiva avanzada' },
-    { n: 'Modismos y vocabulario' }, { n: 'Conectores complejos' } ] },
+    { n: 'Perfect tenses', lecciones: [...PERFECTOS, R('repaso-perfectos', PERFECTOS)] },
+    { n: 'Advanced conditionals', lecciones: [...CONDICIONALES_B2, R('repaso-condicionales-b2', CONDICIONALES_B2)] },
+    { n: 'Advanced passive', lecciones: [...PASIVA_B2, R('repaso-pasiva-b2', PASIVA_B2)] },
+    { n: 'Idioms and vocabulary', lecciones: [...MODISMOS, R('repaso-modismos', MODISMOS)] },
+    { n: 'Complex connectors', lecciones: [...CONECTORES_B2, R('repaso-conectores-b2', CONECTORES_B2)] } ] },
   { nivel: 'C1', nombre: 'Avanzado', unidades: [
     { n: 'Estructuras avanzadas' }, { n: 'Expresiones idiomáticas' }, { n: 'Estilo y coherencia' },
     { n: 'Matices de los tiempos' }, { n: 'Conectores avanzados' } ] }
@@ -807,7 +1113,7 @@ function decir(txt) {
 /* Cuando la persona deja de hablar, el mensaje se envía solo. */
 function finDeDictado() { if (chat && chat.porVoz && !chat.ocupado && vista === 'hablar' && (chat.borrador || '').trim()) mandar(); else if (chat) chat.porVoz = false; }
 const mezclar = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
-const CONTR = { "i'm": 'i am', 'im': 'i am', "don't": 'do not', 'dont': 'do not', "doesn't": 'does not', 'doesnt': 'does not', "isn't": 'is not', "aren't": 'are not', "can't": 'cannot', 'cant': 'cannot', "it's": 'it is', "he's": 'he is', "she's": 'she is', "we're": 'we are', "they're": 'they are', "you're": 'you are', "what's": 'what is', "where's": 'where is', "that's": 'that is', "wasn't": 'was not', "weren't": 'were not', "didn't": 'did not', 'didnt': 'did not', "couldn't": 'could not', "shouldn't": 'should not' };
+const CONTR = { "i'm": 'i am', 'im': 'i am', "don't": 'do not', 'dont': 'do not', "doesn't": 'does not', 'doesnt': 'does not', "isn't": 'is not', "aren't": 'are not', "can't": 'cannot', 'cant': 'cannot', "it's": 'it is', "he's": 'he is', "she's": 'she is', "we're": 'we are', "they're": 'they are', "you're": 'you are', "what's": 'what is', "where's": 'where is', "that's": 'that is', "wasn't": 'was not', "weren't": 'were not', "didn't": 'did not', 'didnt': 'did not', "couldn't": 'could not', "shouldn't": 'should not', "won't": 'will not', 'wont': 'will not', "i'll": 'i will', "you'll": 'you will', "we'll": 'we will', "they'll": 'they will', "she'll": 'she will', "he'll": 'he will', "it'll": 'it will', "i've": 'i have', "you've": 'you have', "we've": 'we have', "they've": 'they have', "haven't": 'have not', "hasn't": 'has not', "hadn't": 'had not', "wouldn't": 'would not', "let's": 'let us', 'canceled': 'cancelled', 'favour': 'favor', 'favourite': 'favorite' };
 const limpio = (s) => s.toLowerCase().replace(/[.,!?¡¿]/g, '').replace(/’/g, "'").replace(/\s+/g, ' ').trim().split(' ').map((w) => CONTR[w] || w).join(' ').replace(/can not/g, 'cannot');
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const app = document.getElementById('app');
@@ -834,7 +1140,7 @@ const PREGUNTAS_EN = [
   [/^Completa: /, 'Complete: '], [/^¿Cómo se dice «(.+)»\?$/, 'How do you say «$1»?'], [/^¿Qué significa «(.+)»\?$/, 'What does «$1» mean?'],
   [/^¿Cuál es el plural de «(.+)»\?$/, 'What is the plural of «$1»?'], [/^¿Cuál es el pasado de «(.+)»\?$/, 'What is the past of «$1»?'],
   [/^¿Cuál frase está bien ordenada\?$/, 'Which sentence is correct?'], [/^¿Qué número sigue\? /, 'What number is next? '],
-  [/^¿Cuánto es five más five\?$/, 'How much is five plus five?'], [/^¿Qué letra se llama «ei» en inglés\?$/, 'Which letter sounds like «ei»?'] ];
+  [/^¿Cuánto es five más five\?$/, 'How much is five plus five?'], [/^¿Qué letra se llama «ei» en inglés\?$/, 'Which letter sounds like «ei»?'], [/^¿Cuál es lo contrario de «(.+)»\?$/, 'What is the opposite of «$1»?'] ];
 const enq = (q) => PREGUNTAS_EN.reduce((s, par) => s.replace(par[0], par[1]), q);
 
 /* ---------- Inicio: una sola unidad a la vista, sin scroll ---------- */
@@ -1097,7 +1403,11 @@ const GRAMATICA = [
   'can/could; must and have to; should; may, might and would for polite requests',
   'prepositions of place (on, under, next to, behind), time (in, on, at) and movement; before, after, until',
   'comparatives (er than, more than); superlatives (the best, the most); as ... as',
-  'connectors: first, then, so, also, if, although, while; opinions with I think and I agree' ];
+  'connectors: first, then, so, also, if, although, while; opinions with I think and I agree',
+  'future with will and going to', 'passive voice in present and past simple', 'zero, first and second conditionals',
+  'modal verbs in context: deduction, advice, obligation', 'common phrasal verbs', 'reported speech',
+  'perfect tenses: present perfect, past perfect, future perfect, and their continuous forms', 'third and mixed conditionals; wish and if only',
+  'advanced passive: with modals, have something done', 'idiomatic expressions and wider vocabulary', 'complex connectors: despite, whereas, therefore, nevertheless' ];
 
 /* ---------- Conversación con Osito (el servidor habla con Gemini; la clave nunca llega aquí) ---------- */
 const TEMAS = [
